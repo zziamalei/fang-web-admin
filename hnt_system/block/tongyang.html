@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>同养表</title>
+    <style>
+        @media print {
+            INPUT {
+                display: none
+            }
+        }
+
+        .table-c table {
+            border-right: 1px solid #000000;
+            border-bottom: 1px solid #000000;
+            border-top: 1px solid #000000;
+        }
+
+        .table-c table td {
+            border-left: 1px solid #000000;
+            border-bottom: 1px solid #000000
+        }
+
+        .edit{
+            display: none;
+        }
+
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="../../plugins/layui/css/layui.css" media="all"/>
+    <script type="text/javascript" src="../../plugins/jquery/jquery.min.js"></script>
+    <script src="../../js/vue.js"></script>
+    <script src="../../js/ajax_utils.js"></script>
+    <script src="../../js/moment.min.js"></script>
+    <script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+    <script type="text/javascript" src="../../plugins/frame/js/frame.js?v=1.5.0"></script>
+    <script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+    <script>
+
+        function eidt() {
+            $('.edit').show();
+            $('.print').hide();
+            $('.editBtn').show();
+            $('#xiugaiBtn').hide();
+        }
+        function save() {
+            $.myAjax({
+                url: '/1.0/zh/blockTemperature/updateList',
+                type:'post',
+                data: {blockId:id,list:JSON.stringify(app.list)},
+                successBack: function (msg) {
+                    layer.msg(msg, {icon:1});
+                }
+            });
+
+        }
+
+        function cancle() {
+           window.location.reload();
+
+        }
+
+
+
+
+    </script>
+
+</head>
+<body>
+
+
+<div id="app" class="table-c">
+
+     <div style="margin-bottom: 20px;margin-left: 20px" class="editBtn">
+        <input id="xiugaiBtn" type=button value=" 修 改 " onclick=javascript:eidt()>&nbsp;&nbsp;&nbsp;&nbsp;
+        <input class=" print"  type=button value=" 打 印 " onclick=javascript:window.print()>
+    </div>
+
+
+
+    <TABLE border="0" style="font-size:12pt;text-align: center;" width="800px" align="center" border="0" cellspacing="0"
+           cellpadding="0" class="print" id="printTable">
+        <THEAD style="display:table-header-group;font-weight:bold">
+        <tr>
+            <td>工程名称</td>
+            <td colspan="3">{{item.itemName}}</td>
+            <td>成型日期</td>
+            <td colspan="2">{{block.quyangTime|moment0}}</td>
+        </tr>
+        <tr>
+            <td>工程部位</td>
+            <td colspan="3">{{block.blockName}}</td>
+            <td>强度等级</td>
+            <td colspan="2">{{block.level}}</td>
+        </tr>
+
+        <tr>
+            <td>日期</td>
+            <td>最高温度</td>
+            <td>最低温度</td>
+            <td>平均温度</td>
+            <td>有效温度判断</td>
+            <td>有效累计天数</td>
+            <td>累计℃·d</td>
+
+        </tr>
+        </THEAD>
+        <TBODY style="text-align:center">
+
+        <tr v-for="(item, index) in sortList">
+            <td>{{item.recordTime|moment}}</td>
+            <td>
+               {{item.high}}
+                ℃
+
+            </td>
+            <td>
+              {{item.low}} ℃</td>
+            <td>{{item.average}}℃
+            </td>
+            <td>{{item.useful|useful}}</td>
+            <td>{{index|usefulDay}}</td>
+            <td>{{index|usefulTemp}}℃</td>
+
+
+
+        </tr>
+
+
+        <tr style="height: 50px">
+            <td>取样员</td>
+            <td colspan="2"></td>
+            <td>见证员</td>
+            <td colspan="3"></td>
+        </tr>
+        </TBODY>
+        <!-- <TFOOT style="display:table-footer-group;font-weight:bold">
+         <TR>
+             <TD colspan="2" align="center" style="font-weight:bold;border:3px double blue">每页都有的表尾</TD>
+         </TR>
+         </TFOOT>-->
+    </TABLE>
+
+
+    <TABLE border="0" style="font-size:12pt;text-align: center;" width="800px" align="center" border="0" cellspacing="0"
+           cellpadding="0" class="edit">
+        <THEAD style="display:table-header-group;font-weight:bold">
+        <tr>
+            <td>工程名称</td>
+            <td colspan="3">{{item.itemName}}</td>
+            <td>成型日期</td>
+            <td colspan="2">{{block.quyangTime|moment0}}</td>
+        </tr>
+        <tr>
+            <td>工程部位</td>
+            <td colspan="3">{{block.blockName}}</td>
+            <td>强度等级</td>
+            <td colspan="2">{{block.level}}</td>
+        </tr>
+
+        <tr>
+            <td>日期</td>
+            <td>最高温度</td>
+            <td>最低温度</td>
+            <td>平均温度</td>
+            <td>有效温度判断</td>
+            <td>有效累计天数</td>
+            <td>累计℃·d</td>
+
+        </tr>
+        </THEAD>
+        <TBODY style="text-align:center">
+
+        <tr v-for="(item, index) in sortList">
+            <td>{{item.recordTime|moment}}</td>
+            <td>
+                <input style="width: 50px;"  v-model="item.high">
+
+                ℃
+
+            </td>
+            <td>
+                <input style="width: 50px" v-model="item.low">
+
+                ℃</td>
+            <td>{{item.average}}℃
+              <label class="layui-btn"  v-on:click="remove(index)">删除</label>
+            </td>
+            <td>{{item.useful|useful}}</td>
+            <td>{{index|usefulDay}}</td>
+            <td>{{index|usefulTemp}}℃</td>
+
+
+
+        </tr>
+
+
+        <tr style="height: 50px">
+            <td>取样员</td>
+            <td colspan="2"></td>
+            <td>见证员</td>
+            <td colspan="3"></td>
+        </tr>
+        </TBODY>
+        <!-- <TFOOT style="display:table-footer-group;font-weight:bold">
+         <TR>
+             <TD colspan="2" align="center" style="font-weight:bold;border:3px double blue">每页都有的表尾</TD>
+         </TR>
+         </TFOOT>-->
+    </TABLE>
+
+  <!--  <div style="margin-top: 20px;margin-left: 20px"> <input type=button value=" 打 印 " onclick=javascript:window.print()></div>-->
+
+    <div class="edit" style="margin-top: 20px">
+
+        <fieldset class="layui-elem-field site-demo-button" style="margin-top: 30px;">
+            <legend>增加温度</legend>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">最高温度</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="high" required="" lay-verType="tips" lay-verify="required" max="60" min="-60"
+                           placeholder="请输入最高温度" autocomplete="off" class="layui-input"/>
+                </div>
+                <label class="layui-form-label">最低温度</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="low" required="" lay-verType="tips" lay-verify="required" max="60" min="-60"
+                           placeholder="请输入最低温度" autocomplete="off" class="layui-input"/>
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">取样日期</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="recordTime" autocomplete="off" class="layui-input" id="time1" lay-verify="required"  dataFormatType="yyyy-MM-dd HH:mm:ss"  />
+                </div>
+
+                <label class="layui-form-label"></label>
+                <div class="layui-input-inline">
+                    <input class="layui-btn " type=button value="添加记录" onclick=javascript:add()>
+                </div>
+
+
+            </div>
+
+        </fieldset>
+
+
+
+    </div>
+
+    <div style="margin-bottom: 20px;margin-left: 20px;margin-top: 20px" class="edit">
+        <input class="layui-btn " type=button value=" 保 存 " onclick=javascript:save()> &nbsp;&nbsp;&nbsp;&nbsp;
+        <input class="layui-btn " type=button value=" 返 回 " onclick=javascript:cancle()>
+    </div>
+
+</div>
+
+
+</body>
+
+
+<script>
+    var urlParam = getUrlParam();
+    var id = urlParam["id"];
+    var layer;
+    layui.use(['laydate','layer'], function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#time1' //指定元素
+            ,type: 'datetime'
+        });
+    });
+
+    function  add() {
+
+        var high=parseFloat($('input[name="high"]').val());
+        var low=parseFloat($('input[name="low"]').val());
+        var average=(high+low)/2;
+        var recordTime=$('input[name="recordTime"]').val();
+        app.list.push({high:high,low:low,average:average,recordTime:recordTime,useful:true,blockId:id});
+        $('.edit').show();
+
+    }
+
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            item:{},
+            block: {},
+            list: []
+        }
+        , filters: { //时间格式化
+            moment0:function (value, formatString) {
+                formatString = formatString || 'YYYY年MM月DD日';
+                return moment(value).format(formatString);
+            }
+            ,moment:function (value, formatString) {
+                formatString = formatString || 'MM月DD日';
+                return moment(value).format(formatString);
+            }
+            ,useful:function (value) {
+                if (value) {
+                    return '有效';
+                } else {
+                    return '无效';
+                }
+            },
+            usefulDay:function (index) {
+                var total=0;
+                for(var i= 0 ;i< index+1; i++) {
+                    if(app.list[i].useful){
+                        total=total+1;
+                    }
+                }
+                return total;
+            },
+            usefulTemp:function (index) {
+                var total=0;
+                for(var i= 0 ;i< index+1; i++) {
+                    if(app.list[i].useful){
+                        total=total+(parseFloat(app.list[i].high)+parseFloat(app.list[i].low))/2;
+                    }
+                }
+                return total;
+            }
+        }
+        ,computed:{
+           sortList:function() {
+               return this.list.sort(sortShowList);
+           }
+
+
+        }
+        ,methods:{
+            remove:function (index) {
+
+                app.list.splice(index,1);
+
+            }
+        }
+        , mounted: function () {
+            this.$nextTick(function () {
+                // Code that will run only after the
+                // entire view has been rendered
+
+            })
+        }
+    });
+
+
+
+    function sortShowList(a,b) {
+        var a1=a.recordTime;
+        if(!isRealNum(a1)){
+            a1 = new Date(a1.replace(/-/g,'/')).getTime();
+        }
+        var b1=b.recordTime;
+        if(!isRealNum(b1)){
+            b1 = new Date(b1.replace(/-/g,'/')).getTime();
+        }
+
+        return a1-b1;
+    }
+
+    function isRealNum(val){
+        // isNaN()函数 把空串 空格 以及NUll 按照0来处理 所以先去除
+        if(val === "" || val ==null){
+            return false;
+        }
+        if(!isNaN(val)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    $.myAjaxList({
+        url: '/1.0/zh/blockTemperature/all',
+        data: {blockId: id},
+        successBack: function (data) {
+            app.list = data;
+        }
+    });
+
+    $.myAjaxList({
+        url: '/1.0/zh/block/getInfo',
+        data: {blockId: id},
+        successBack: function (data) {
+            app.item = data.item;
+            app.block = data.block;
+        }
+    });
+
+
+
+
+    function getUrlParam() {
+        var param = window.location.search;
+        var pattern = /([^?&=]+)=([^&#]*)/g;
+        var dict = {};
+        var search = null;
+        if (typeof param === "object" && param instanceof Location) {
+            search = param.search;
+        }
+        else if (typeof param === "string") {
+            search = param;
+        }
+        else {
+            throw new Error("参数类型非法！请传入window.loaction对象或者url字符串。");
+        }
+        search.replace(pattern, function (rs, $1, $2) {
+            var key = decodeURIComponent($1);
+            var value = decodeURIComponent($2);
+            dict[key] = value;
+            return rs;
+        });
+        return dict;
+    }
+
+</script>
+</html>

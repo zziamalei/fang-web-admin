@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="text/html;charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Cache-Control" content="no cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <script src="https://cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="https://cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../../plugins/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../../css/fs.css" media="all"/>
+
+    <script type="text/javascript" src="../../plugins/jquery/jquery.min.js"></script>
+
+</head>
+<body>
+<div class="layui-row layui-col-space1" id="weather">
+
+
+    <fieldset class="layui-elem-field " style="margin-top: 5px;margin-bottom: 20px">
+        <legend>{{city}}天气</legend>
+        <div>
+
+            <button v-for="obj in list" class="layui-btn layui-btn-primary layui-btn-lg">
+                <label>{{obj.week}}</label>
+                {{(obj.highTemp+obj.lowTemp)/2}}（{{obj.highTemp}} ℃/ {{obj.lowTemp}}℃）
+            </button>
+
+        </div>
+    </fieldset>
+</div>
+
+
+<div class="layui-fluid">
+
+        <div class="layui-col-md3" style="width: 15%">
+            <fieldset class="layui-elem-field">
+                <legend>所属工程</legend>
+
+                <div class="layui-form-query">
+                    <form class="layui-form" id="query_form1">
+                        <div class="layui-form-item">
+
+                            <div class="layui-inline">
+
+                                <div class="layui-input-inline" style="width: 100px;">
+                                    <input type="text" name="itemName" placeholder="工程名称" autocomplete="off" class="layui-input"/>
+
+                                </div>
+                                <button class="layui-btn" type="button" function="query"><i
+                                        class="layui-icon">&#xe615;</i>
+                                </button>
+                            </div>
+
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="layui-field-box">
+                    <div class="layui-row layui-col-space10">
+                        <div class="layui-col-md12">
+                            <ul id="treeDemo" class="ztree"
+                                style="width: 100%;border-color: #ffffff;background-color: #ffffff"></ul>
+
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="layui-col-md9" style="width: 85%">
+            <fieldset id="menu_func_div" class="layui-elem-field">
+                <legend>试块列表</legend>
+
+                <div class="layui-form-query">
+                    <form class="layui-form" id="query_form">
+                        <input type="hidden" name="itemId" id="itemId">
+                        <div class="layui-form-item">
+
+
+                            <div class="layui-inline">
+                                <label class="layui-form-mid">试块名称：</label>
+                                <div class="layui-input-inline" style="width: 100px;">
+                                    <input type="text" name="blockName" autocomplete="off" class="layui-input"/>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-mid">同养状态：</label>
+                                <div class="layui-input-inline" style="width: 100px;">
+                                    <input type="text" name="itemName" autocomplete="off" class="layui-input"/>
+                                </div>
+                            </div>
+
+                            <div class="layui-inline">
+                                <label class="layui-form-mid">标养状态：</label>
+                                <div class="layui-input-inline" style="width: 100px;">
+                                    <input type="text" name="itemName" autocomplete="off" class="layui-input"/>
+                                </div>
+                            </div>
+
+                            <!--<div class="layui-inline">
+                                <label class="layui-form-mid">时间：</label>
+                                <div class="layui-input-inline" style="">
+                                    <input type="text" name="createDate" autocomplete="off" class="layui-input fsDate" dateRange="1" placeholder=" - "/>
+                                </div>
+                            </div>-->
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <button id="searchBtn" class="layui-btn" type="button" function="query"><i class="layui-icon">&#xe615;</i>查询
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="layui-field-box">
+                    <div class="layui-col-md12 layui-col-space1">
+                        <div class="table_buttion_div">
+                            <button class="layui-btn"  topUrl="hnt_system/block/edit.html" topMode="add"
+                                    topWidth="800px" topHeight="600px" topTitle="新增试块"  onclick="addBlock(this)">
+                                <i class="layui-icon">&#xe654;</i>新增
+                            </button>
+                            <button class="layui-btn layui-btn-danger" function="submit" url="/1.0/zh/block/deleteList"
+                                    isMutiDml="1" isConfirm="1" confirmMsg="是否确定删除选中的数据？" inputs="id:">
+                                <i class="layui-icon">&#xe640;</i>删除
+                            </button>
+                            <button class="layui-btn" function="refresh">
+                                <i class="layui-icon" id="refresh">&#x1002;</i>刷新
+                            </button>
+                        </div>
+                        <div class="layui-col-md12">
+                            <table id="fsDatagrid" lay-filter="fsDatagrid" class="fsDatagrid" isLoad="1"
+                                   url="/1.0/zh/block/pageList" isPage="1" defaultForm="query_form"
+                                   height="full-150"></table>
+
+                            <div class="fsDatagridCols">
+                                <p type="numbers" title="#"/>
+                                <p checkbox="true"/>
+                                <p field="id" title="ID" width="5%" sort="true"/>
+                                <p field="blockName" title="试块名称" width="10%" sort="true"/>
+                                <p field="blockCode" title="试块编号" width="10%" sort="true"/>
+                                <p field="level" title="强度等级" width="10%" sort="true"/>
+                                <p field="quyangTime" title="取样日期" width="9.5%" formatType="MM-dd" sort="true"/>
+                                <p field="byTrustTime" title="委托日期" width="9.5%" formatType="MM-dd"sort="true"/>
+                                <p field="tongyangDay" title="剩余天数" width="5%" sort="true"/>
+                                <p field="tongyangTrust" title="同养委托" templet="#tongyangTrustTpl"width="5%" sort="true"/>
+                                <p field="biaoyangTrust" title="标养委托" templet="#biaoyangTrustTpl" width="5%" sort="true"/>
+                                <p field="biaoyangGroup" title="标养组"  width="7%"/>
+                                <p fixed="right" align="center" toolbar="#barDemo" title="操作" width="15%"/>
+                            </div>
+
+                            <script type="text/html" id="tongyangTrustTpl">
+                                <input type="checkbox" name="tongyangTrust" lay-skin="switch" disabled lay-text="已委托|未委托" {{ d.tongyangTrust== 1 ? 'checked' : '' }}>
+                            </script>
+                            <script type="text/html" id="biaoyangTrustTpl">
+                                <input type="checkbox" name="biaoyangTrust" lay-skin="switch" disabled lay-text="已委托|未委托" {{ d.biaoyangTrust== 1 ? 'checked' : '' }}>
+                            </script>
+
+                            <script type="text/html" id="barDemo">
+                                <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="top"
+                                   topUrl="hnt_system/block/tongyang.html" topMode="readonly" topWidth="850px"
+                                   topHeight="100%" topTitle="同养表" inputs="id:">同养表</a>
+                                <a class="layui-btn layui-btn-xs" lay-event="top" topUrl="hnt_system/block/edit.html"
+                                   topMode="edit" topWidth="800px" topHeight="600px" topTitle="编辑试块" inputs="id:">编辑</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="submit"
+                                   url="/1.0/zh/block/deleteList" isConfirm="1" confirmMsg="是否确定删除当前记录？"
+                                   inputs="id:">删除</a>
+                            </script>
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
+        </div>
+
+
+    </div>
+</div>
+</body>
+<script src="../../js/vue.js"></script>
+<script src="../../js/ajax_utils.js"></script>
+
+
+
+
+<link rel="stylesheet" href="../../plugins/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="../../plugins/ztree/js/jquery.ztree.core.js"></script>
+
+
+
+<SCRIPT type="text/javascript">
+    <!--
+    var setting = {
+        async: {
+            enable: true,
+            type: "get",
+            url: getUrl,
+            dataFilter: ajaxDataFilter
+
+        },
+        check: {
+            enable: true
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        view: {
+            expandSpeed: ""
+        },
+        callback: {
+            beforeExpand: beforeExpand,
+            onAsyncSuccess: onAsyncSuccess,
+            onAsyncError: onAsyncError,
+            onClick: zTreeOnClick
+        }
+    };
+
+    var zNodes = [];
+
+    $.myAjaxList({
+        url: '/1.0/zh/project/all',
+        successBack: function (data) {
+            $(data).each(function (index, item) {
+                zNodes.push({name: item.projectName, id: 'p-'+item.id, times: 1, isParent: true});
+            });
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+        }
+    });
+
+
+    var log, className = "dark",
+        startTime = 0, endTime = 0, perCount = 100, perTime = 100;
+
+    function getUrl(treeId, treeNode) {
+        /* var curCount = (treeNode.children) ? treeNode.children.length : 0;
+         var getCount = (curCount + perCount) > treeNode.count ? (treeNode.count - curCount) : perCount;
+         var param = "id="+treeNode.id+"_"+(treeNode.times++) +"&count="+getCount;*/
+        return  apiRoot+"/1.0/zh/item/all?projectId=" + treeNode.id.split('-')[1];
+    }
+
+    function ajaxDataFilter(treeId, parentNode, responseData) {
+
+        var rtData = [];
+        if (responseData && responseData.returnData) {
+            for (var i = 0; i < responseData.returnData.length; i++) {
+                rtData.push({
+                    id: responseData.returnData[i].id,
+                    name: responseData.returnData[i].itemName,
+                    pId: 'p-'+parentNode.id
+                });
+            }
+        }
+
+        return rtData;
+    };
+
+    function beforeExpand(treeId, treeNode) {
+        if (!treeNode.isAjaxing) {
+            startTime = new Date();
+            treeNode.times = 1;
+            ajaxGetNodes(treeNode, "refresh");
+            return true;
+        } else {
+            alert("zTree 正在下载数据中，请稍后展开节点。。。");
+            return false;
+        }
+    }
+
+    function onAsyncSuccess(event, treeId, treeNode, msg) {
+        if (!msg || msg.length == 0) {
+            return;
+        }
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+            totalCount = treeNode.count;
+        if (treeNode.children.length < totalCount) {
+            setTimeout(function () {
+                ajaxGetNodes(treeNode);
+            }, perTime);
+        } else {
+            treeNode.icon = "";
+            zTree.updateNode(treeNode);
+            zTree.selectNode(treeNode.children[0]);
+            endTime = new Date();
+            var usedTime = (endTime.getTime() - startTime.getTime()) / 1000;
+            className = (className === "dark" ? "" : "dark");
+            showLog("[ " + getTime() + " ]&nbsp;&nbsp;treeNode:" + treeNode.name);
+            showLog("加载完毕，共进行 " + (treeNode.times - 1) + " 次异步加载, 耗时：" + usedTime + " 秒");
+        }
+    }
+
+    function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        alert("异步获取数据出现异常。");
+        treeNode.icon = "";
+        zTree.updateNode(treeNode);
+    }
+
+    function ajaxGetNodes(treeNode, reloadType) {
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        if (reloadType == "refresh") {
+            treeNode.icon = "../../../css/zTreeStyle/img/loading.gif";
+            zTree.updateNode(treeNode);
+        }
+        zTree.reAsyncChildNodes(treeNode, reloadType, true);
+    }
+
+    function showLog(str) {
+        if (!log) log = $("#log");
+        log.append("<li class='" + className + "'>" + str + "</li>");
+        if (log.children("li").length > 4) {
+            log.get(0).removeChild(log.children("li")[0]);
+        }
+    }
+
+    function getTime() {
+        var now = new Date(),
+            h = now.getHours(),
+            m = now.getMinutes(),
+            s = now.getSeconds(),
+            ms = now.getMilliseconds();
+        return (h + ":" + m + ":" + s + " " + ms);
+    }
+
+    function zTreeOnClick(event, treeId, treeNode) {
+
+        if(treeNode.pId){
+           $('#itemId').val(treeNode.id);
+            loadWeather($('#itemId').val());
+        }else{
+            $('#itemId').val(null);
+        }
+
+        $('#searchBtn').click();
+
+
+    };
+
+    $(document).ready(function () {
+        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+
+    });
+    //-->
+</SCRIPT>
+
+<script>
+
+    var weather = new Vue({
+        el: '#weather',
+        data: {
+            city: "",
+            list:[]
+        }
+    })
+
+
+
+    function loadWeather(itemId) {
+        $.myAjaxList({
+            url: '/1.0/zh/weather/item_weather',
+            data: {itemId: itemId},
+            successBack: function (data) {
+                weather.city=data.item.areaName;
+                weather.list=data.list;
+            }
+        });
+    }
+
+
+
+    function addBlock(obj) {
+        $(obj).attr('function','');
+       if($('#itemId').val()){
+           $(obj).attr('topUrl','hnt_system/block/edit.html?itemId='+$('#itemId').val());
+           $(obj).attr('function','top');
+          // fsCommon.open('新增试块','800px','600px','hnt_system/block/edit.html?itemId='+$('#itemId').val(),null,null);
+
+       }else{
+           fsCommon.errorMsg('请选择工程!');
+       }
+    }
+
+</script>
+
+
+<script type="text/javascript" src="../../plugins/layui/layui.js"></script>
+<script type="text/javascript" src="../../plugins/frame/js/fsDict.js?v=1.5.0"></script>
+<script type="text/javascript" src="../../plugins/frame/js/fs.js?v=1.5.0"></script>
+<script type="text/javascript" src="../../plugins/frame/js/frame.js?v=1.5.0"></script>
+
+
+</html>
