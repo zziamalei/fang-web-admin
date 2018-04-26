@@ -220,9 +220,10 @@
                                    $('.login').removeClass('test');
                                    //登录成功
                                    $('.login div').fadeOut(100);
-//                                   $('.success').fadeIn(1000);
+                                   $('.success').fadeIn(1000);
+                                   $('.success').html('登陆成功<br /><br />欢迎回来');
 
-                                   layer.msg(data,{time:500},function () {
+                                   layer.msg("正在跳转",{time:2000},function () {
 									   window.location.href='index.html';
                                    });
 
