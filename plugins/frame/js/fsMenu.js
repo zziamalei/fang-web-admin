@@ -20,8 +20,14 @@ layui.define(['element',"fsConfig","fsCommon"], function(exports){
 			parentMenuIdField : "parentMenuId" ,//父菜单id
 			data : [
 
-               {"menuId":"kongzhitai","menuName":"控制台22","menuIcon":"fa-cog","menuHref":"","parentMenuId":"0"},
+               {"menuId":"kongzhitai","menuName":"控制台","menuIcon":"fa-cog","menuHref":"","parentMenuId":"0"},
                 {"menuId":"shouye","menuName":"首页","menuIcon":"&#xe68e;","menuHref":"hnt_system/index.html","parentMenuId":"kongzhitai"},
+                {"menuId":"xitongguanli","menuName":"系统管理","menuIcon":"fa-cog","menuHref":"","parentMenuId":"kongzhitai"},
+				{"menuId":"jueseguanli","menuName":"角色管理","menuIcon":"fa-cog","menuHref":"admin_system/role_list.html","parentMenuId":"xitongguanli"},
+
+
+
+
                 {"menuId":"canshushezhi","menuName":"系统设置","menuIcon":"fa-cog","menuHref":"hnt_system/config/system_config.html","parentMenuId":"kongzhitai"},
               /*  {"menuId":"wenducaiji_01","menuName":"温度采集","menuIcon":"<i class=\"layui-icon\">&#xe61c;</i>","menuHref":"404.html","parentMenuId":"kongzhitai"},*/
                 {"menuId":"xiangmuguanli","menuName":"项目管理","menuIcon":"fa-cog","menuHref":"hnt_system/project/index.html","parentMenuId":"kongzhitai"},
