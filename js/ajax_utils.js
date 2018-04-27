@@ -17,7 +17,11 @@ $.extend({
         $.ajax({
             type: options.type,
             url: apiRoot+options.url,
+            beforeSend: function(request) {
+                request.setRequestHeader("access_token", "1");
+            },
             data: options.data,
+
             success: function(data){
                 options.successBack(data.returnData);
             }
@@ -64,11 +68,13 @@ $.extend({
             }
         };
 
+
         var options=jQuery.extend({},_default,options);
         $.ajax({
             type: options.type,
             url: apiRoot+options.url,
             data: options.data,
+            headers:{access_token:"1"},
             beforeSend: function(request) {
                 request.setRequestHeader("access_token", "1");
             },
@@ -101,6 +107,7 @@ $.extend({
             setlayerTable:function () {
 
             }
+
         };
 
         var options=jQuery.extend({},_default,options);
@@ -133,6 +140,56 @@ $.extend({
             });
 
 
+            if(options.bindClickOpen){
+                $('a[lay-event=' + options.bindClickOpen + ']').click(function () {
+                    myopen(options.bindClickOpen);
+                });
+            }
+
+            function myopen(layEvent, name,value, obj) {
+                var areaWidth = '700px';
+                var areaHeight = '400px';
+
+                if ($('a[lay-event=' + layEvent + ']').attr('areaWidth')) {
+                    areaWidth = $('a[lay-event=' + layEvent + ']').attr('areaWidth');
+                }
+                if ($('a[lay-event=' + layEvent + ']').attr('areaHeight')) {
+                    areaHeight = $('a[lay-event=' + layEvent + ']').attr('areaHeight');
+                }
+
+
+                var title='弹出框';
+                if($('a[lay-event=' + layEvent + ']').attr('title')){
+                    title=$('a[lay-event=' + layEvent + ']').attr('title');
+                }
+
+
+
+                if (layEvent === 'open' || layEvent === 'open1' || layEvent === 'open2' || layEvent === 'open3' || layEvent === 'open4') { //查看
+
+
+                    var url=$('a[lay-event=' + layEvent + ']').attr('url') ;
+                    if(name){
+                        url+='?' + name+ '=' + value;
+                    }
+                    layer.open({
+                        type: 2,
+                        title:title,
+                        area: [areaWidth, areaHeight],
+                        fixed: false, //不固定
+                        maxmin: true,
+                        content: $('a[lay-event=' + layEvent + ']').attr('url') + '?' + name+ '=' + value
+                    });
+
+                } else if (layEvent === 'confirm') { //删除
+                    layer.confirm('确定删除本行？',{title:'提示'}, function (index) {
+                        obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                        layer.close(index);
+                        //向服务端发送删除指令
+
+                    });
+                }
+            }
 
             if(options.tool){
 
@@ -142,38 +199,9 @@ $.extend({
                     var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
                     var tr = obj.tr; //获得当前行 tr 的DOM对象
 
-                    var areaWidth='700px';
-                    var areaHeight='400px';
-
-                    if($('a[lay-event='+layEvent+']').attr('areaWidth')){
-                        areaWidth=$('a[lay-event='+layEvent+']').attr('areaWidth');
-                    }
-                    if($('a[lay-event='+layEvent+']').attr('areaHeight')){
-                        areaHeight=$('a[lay-event='+layEvent+']').attr('areaHeight');
-                    }
 
 
-
-                    if(layEvent === 'open'||layEvent === 'open1'||layEvent === 'open2'||layEvent === 'open3'||layEvent === 'open4'){ //查看
-
-                        layer.open({
-                            type: 2,
-                            area: [areaWidth, areaHeight],
-                            fixed: false, //不固定
-                            maxmin: true,
-                            content: $('a[lay-event='+layEvent+']').attr('url')+'?'+$('a[lay-event='+layEvent+']').attr('idName')+'='+data[$('a[lay-event='+layEvent+']').attr('idName')]
-                        });
-
-                    } else if(layEvent === 'confirm'){ //删除
-                        layer.confirm('真的删除行么', function(index){
-                            obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-                            layer.close(index);
-                            //向服务端发送删除指令
-
-                        });
-                    }
-
-
+                    myopen(layEvent, $('a[lay-event=' + layEvent + ']').attr('idName') , data[$('a[lay-event=' + layEvent + ']').attr('idName')]);
 
                 });
 
@@ -210,12 +238,6 @@ $.extend({
         };
 
         var options=jQuery.extend({},_default,options);
-
-        if(options.id){
-            parent.$('.layui-layer-title').html('编辑'+options.title);
-        }else{
-            parent.$('.layui-layer-title').html('新增'+options.title);
-        }
 
         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 
@@ -276,3 +298,11 @@ $.extend({
         });
     }
 });
+
+
+function GetQueryString(name)
+{
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null)return  unescape(r[2]); return null;
+}

@@ -5,16 +5,11 @@
     <title>列表</title>
     <link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css" media="all"/>
 </head>
-<body>
+<body style="padding-top: 10px;padding-left: 10px;padding-right: 10px">
 
-<fieldset class="layui-elem-field site-demo-button" style="margin-top: 30px;">
 
-    <div>
 
-    </div>
-</fieldset>
-
-<a class="layui-btn layui-btn-xs" lay-event="open1" url="role_edit.html" areaHeight="400px" areaWidth="700px" idName="uid">新增</a>
+<a class="layui-btn layui-btn-xs" lay-event="open" url="role_edit.html" areaHeight="400px" areaWidth="700px" title="新增角色" >新增</a>
 
 
 <table id="table" lay-filter="table"></table>
@@ -30,8 +25,8 @@
 
 <script type="text/html" id="barDemo">
 
-    <a class="layui-btn layui-btn-xs" lay-event="open1" url="role_edit.html" areaHeight="400px" areaWidth="700px" idName="uid">编辑</a>
-    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="open2" url="role_permission.html" areaHeight="400px" areaWidth="700px" idName="uid">权限设置</a>
+    <a class="layui-btn layui-btn-xs" lay-event="open1" url="role_edit.html" areaHeight="400px" areaWidth="700px" idName="uid" title="编辑角色">编辑</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="open2" url="role_permission.html" areaHeight="400px" areaWidth="700px" idName="uid" title="权限设置">权限设置</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="confirm" url="role_edit.html" idName="uid">删除</a>
 
     <!-- 这里同样支持 laytpl 语法，如： -->
@@ -63,7 +58,8 @@
             }}
             ,{fixed: 'right', width:200, align:'center', toolbar: '#barDemo'} //这里的toolbar值是模板元素的选择器
         ],
-        tool:true
+        tool:true,
+        bindClickOpen:'open'
     });
 
 
