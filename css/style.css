@@ -1,0 +1,21 @@
+
+.layui-footer{
+    position: fixed;
+    left: 0px;
+    right: 0;
+    bottom: 0;
+    height: 44px;
+    line-height: 44px;
+    padding: 0 15px;
+    vertical-align: middle;
+    background-color: #F8F8F8;
+}
+.footer-btn{
+    padding-left: 35%;
+}
+body{
+    padding-bottom: 44px;
+    padding-top: 10px;
+    padding-right: 10px;
+}
+

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>编辑页面</title>
+    <link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="all"/>
+
+</head>
+<body>
+
+<form class="layui-form" action="/auth/rest/zh/latest/auth/role/save">
+
+    <input name="uid" type="hidden">
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">角色名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="roleName" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">角色类型</label>
+
+            <div class="layui-input-block">
+                <input type="radio" name="roleType" value="platform_admin" title="平台管理员" checked="">
+                <input type="radio" name="roleType" value="platform_user" title="平台用户">
+                <input type="radio" name="roleType" value="operator_admin" title="运营商管理员" >
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">角色描述</label>
+        <div class="layui-input-block">
+            <textarea name="description" placeholder="请输入角色描述" class="layui-textarea"></textarea>
+        </div>
+    </div>
+
+
+    <div class="layui-footer">
+        <div class="footer-btn">
+            <button class="layui-btn " lay-submit="" lay-filter="save">保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <label class="layui-btn layui-btn-danger close-btn">关闭</label>
+        </div>
+        <!-- 底部固定区域 -->
+
+    </div>
+</form>
+
+
+
+<script type="text/javascript" src="../plugins/layui/layui.js"></script>
+<script type="text/javascript" src="../plugins/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/ajax_utils.js"></script>
+<script>
+    $.myEdit();
+</script>
+
+
+</body>
+</html>
