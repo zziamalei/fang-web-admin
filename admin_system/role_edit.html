@@ -9,24 +9,28 @@
 </head>
 <body>
 
+<div id="app">
+
+
+
 <form class="layui-form" action="/auth/rest/zh/latest/auth/role/save">
 
-    <input name="uid" type="hidden">
+    <input name="uid" type="hidden" v-model="obj.uid">
 
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">角色名称</label>
             <div class="layui-input-inline">
-                <input type="text" name="roleName" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="text" name="roleName"  v-model="obj.roleName" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">角色类型</label>
 
             <div class="layui-input-block">
-                <input type="radio" name="roleType" value="platform_admin" title="平台管理员" checked="">
-                <input type="radio" name="roleType" value="platform_user" title="平台用户">
-                <input type="radio" name="roleType" value="operator_admin" title="运营商管理员" >
+                <input type="radio" name="roleType" value="platform_admin" title="平台管理员" :checked="obj.roleType==0">
+                <input type="radio" name="roleType" value="platform_user" title="平台用户":checked="obj.roleType==1">
+                <input type="radio" name="roleType" value="operator_admin" title="运营商管理员" :checked="obj.roleType==4">
             </div>
 
         </div>
@@ -36,7 +40,7 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">角色描述</label>
         <div class="layui-input-block">
-            <textarea name="description" placeholder="请输入角色描述" class="layui-textarea"></textarea>
+            <textarea name="description" v-model="obj.description" placeholder="请输入角色描述" class="layui-textarea"></textarea>
         </div>
     </div>
 
@@ -52,13 +56,44 @@
     </div>
 </form>
 
-
+</div>
 
 <script type="text/javascript" src="../plugins/layui/layui.js"></script>
 <script type="text/javascript" src="../plugins/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/vue.js"></script>
 <script type="text/javascript" src="../js/ajax_utils.js"></script>
 <script>
-    $.myEdit();
+    var id= GetQueryString('uid');
+    var app = new Vue({
+        el: '#app',
+        data:{
+            obj:{}
+        }
+    });
+
+    if(id){
+        $.myAjaxData({
+            url:'/auth/rest/zh/latest/auth/role/get',
+            data:{uid:id},
+            type:'get',
+            successBack:function (data) {
+                app.obj = data;
+                app.$nextTick(function () {
+                    $.myEdit();
+                });
+
+            },
+            failBack:function (code,msg) {
+                layer.msg(msg, {icon: 2,time:2000});
+            }
+
+        });
+    }else{
+        $.myEdit();
+    }
+
+
+
 </script>
 
 
