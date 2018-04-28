@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>权限设置</title>
+    <link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="all"/>
+
+</head>
+<body>
+
+<div id="app">
+    <form class="layui-form" action="/auth/rest/zh/latest/permission/save_role_permission">
+        <input name="permissioinIds" type="hidden">
+        <input name="roleId"  type="hidden">
+
+
+        <ul id="treeDemo" class="ztree"></ul>
+
+
+        <div class="layui-footer">
+            <div class="footer-btn">
+                <button class="layui-btn " lay-submit="" lay-filter="save">保存</button>
+                <label class="layui-btn layui-btn-danger close-btn">关闭</label>
+            </div>
+            <!-- 底部固定区域 -->
+
+        </div>
+
+    </form>
+
+
+
+
+</div>
+
+<script type="text/javascript" src="../plugins/layui/layui.js"></script>
+<script type="text/javascript" src="../plugins/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/vue.js"></script>
+<script type="text/javascript" src="../js/ajax_utils.js"></script>
+
+
+<script type="text/javascript" src="../zTree_v3/js/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="../zTree_v3/js/jquery.ztree.excheck.js"></script>
+<link rel="stylesheet" href="../zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+
+<!--
+	<script type="text/javascript" src="../../../js/jquery.ztree.exedit.js"></script>
+	-->
+<SCRIPT type="text/javascript">
+    <!--
+    var setting = {
+        check: {
+            enable: true,
+            chkStyle: "checkbox",
+            chkboxType: {"Y": "ps", "N": "ps"}
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            onCheck: onCheck
+        }
+    };
+
+    function onCheck(e, treeId, treeNode) {
+
+
+        allChecked();
+    }
+
+    function allChecked() {
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        var nodes = zTree.getCheckedNodes(true);
+
+        if (nodes.length == 0) {
+            $('input[name="permissioinIds"]').val('');
+        } else {
+            var value = '';
+            $(nodes).each(function (index, item) {
+                value += ',' + item.id;
+            })
+            $('input[name="permissioinIds"]').val(value.substring(1, value.length));
+        }
+    }
+
+    $(document).ready(function () {
+        var id = GetQueryString('uid');
+        if (id) {
+            $('input[name="roleId"]').val(id);
+            $.myAjaxData({
+                url: '/auth/rest/zh/latest/permission/allList',
+                data: {roleId: id},
+                type: 'get',
+                successBack: function (data) {
+                    $.fn.zTree.init($("#treeDemo"), setting, data);
+                    allChecked();
+                },
+                failBack: function (code, msg) {
+                    layer.msg(msg, {icon: 2, time: 2000});
+                }
+            });
+        }
+        $.myEdit();
+    });
+    //-->
+</SCRIPT>
+
+
+</body>
+</html>

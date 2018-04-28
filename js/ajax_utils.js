@@ -48,8 +48,15 @@ $.extend({
             url: apiRoot+options.url,
             data: options.data,
             success: function(data){
-                var  backData=JSON.parse(data);
-                options.successBack(backData.returnData);
+                try{
+                    var  backData=JSON.parse(data);
+                    options.successBack(backData.returnData);
+                }catch(err)
+                {
+                    options.successBack(data.returnData);
+                }
+
+
             }
         });
 
