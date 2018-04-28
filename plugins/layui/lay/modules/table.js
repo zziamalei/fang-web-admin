@@ -157,6 +157,11 @@ layui.define(["laytpl", "laypage", "layer", "form"], function(e) {
             var c = {};
             c[o.pageName] = e, c[o.limitName] = n.limit;
             var s = t.extend(c, n.where);
+            var indexLoad = layer.msg('加载中', {
+                icon: 16
+                ,shade: 0.2
+            });;
+
             n.contentType && 0 == n.contentType.indexOf("application/json") && (s = JSON.stringify(s)), t.ajax({
                 type: n.method || "get",
                 url: n.url,
@@ -165,13 +170,14 @@ layui.define(["laytpl", "laypage", "layer", "form"], function(e) {
                 dataType: "json",
                 headers: n.headers || {},
                 success: function(t) {
-
-                  $.extend(t,{data:t.returnData.list,count:t.returnData.total});
+                    layer.close(indexLoad);
+                    $.extend(t,{data:t.returnData.list,count:t.returnData.total});
 
 
                     t[r.statusName] != r.statusCode ? (a.renderForm(), a.layMain.html('<div class="' + f + '">' + (t[r.msgName] || "返回的数据状态异常") + "</div>")) : (a.renderData(t, e, t[r.countName]), d(), n.time = (new Date).getTime() - a.startTime + " ms"), i && l.close(i), "function" == typeof n.done && n.done(t, e, t[r.countName])
                 },
                 error: function(e, t) {
+                    layer.close(indexLoad);
                     a.layMain.html('<div class="' + f + '">数据接口请求异常</div>'), a.renderForm(), i && l.close(i)
                 }
             })

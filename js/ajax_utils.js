@@ -138,6 +138,7 @@ $.extend({
                     pageName: 'pageNum' //页码的参数名称，默认：page
                     ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
                 }
+                ,loading:true
                 ,response: {
                     statusName: 'code' //数据状态的字段名称，默认：code
                     ,statusCode: 0 //成功的状态码，默认：0
@@ -153,7 +154,7 @@ $.extend({
                 });
             }
 
-            function myopen(layEvent, name,value, obj) {
+            function myopen(layEvent, name,value,obj) {
                 var areaWidth = '700px';
                 var areaHeight = '400px';
 
@@ -171,14 +172,11 @@ $.extend({
                 }
 
 
-
+                var url=$('a[lay-event=' + layEvent + ']').attr('url') ;
+                if(name){
+                    url+='?' + name+ '=' + value;
+                }
                 if (layEvent === 'open' || layEvent === 'open1' || layEvent === 'open2' || layEvent === 'open3' || layEvent === 'open4') { //查看
-
-
-                    var url=$('a[lay-event=' + layEvent + ']').attr('url') ;
-                    if(name){
-                        url+='?' + name+ '=' + value;
-                    }
                     layer.open({
                         type: 2,
                         title:title,
@@ -190,9 +188,22 @@ $.extend({
 
                 } else if (layEvent === 'confirm') { //删除
                     layer.confirm('确定删除本行？',{title:'提示'}, function (index) {
-                        obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-                        layer.close(index);
-                        //向服务端发送删除指令
+
+                        $.myAjax({
+                            url: url,
+                            // data: {'uid': value},
+                            type: 'post',
+                            successBack: function (data) {
+                                obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                                layer.close(index);
+                                //向服务端发送删除指令
+                            },
+                            failBack: function (code, msg) {
+                                layer.msg(msg, {icon: 2, time: 2000});
+                            }
+                        });
+
+
 
                     });
                 }
@@ -208,7 +219,7 @@ $.extend({
 
 
 
-                    myopen(layEvent, $('a[lay-event=' + layEvent + ']').attr('idName') , data[$('a[lay-event=' + layEvent + ']').attr('idName')]);
+                    myopen(layEvent, $('a[lay-event=' + layEvent + ']').attr('idName') , data[$('a[lay-event=' + layEvent + ']').attr('idName')],obj);
 
                 });
 
@@ -293,7 +304,6 @@ $.extend({
                     successBack:function (msg) {
                         layer.msg(msg, {icon: 1,time:1000},function () {
                             parent.table.reload('table');
-
                             parent.layer.close(index);
                         });
                     },
