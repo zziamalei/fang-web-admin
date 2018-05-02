@@ -363,3 +363,9 @@ function GetParentQueryString(name)
     var r = parent.window.location.search.substr(1).match(reg);
     if(r!=null)return  unescape(r[2]); return null;
 }
+
+
+
+function  getAuth() {
+   return  JSON.parse(window.localStorage.auth);
+}

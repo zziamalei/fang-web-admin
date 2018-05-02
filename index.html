@@ -28,7 +28,7 @@
 	<script type="text/javascript" src="./plugins/frame/js/main.js?v=1.7.1"></script>
 </head>
 <body>
-<div class="layui-layout layui-layout-admin">
+<div class="layui-layout layui-layout-admin" id="app">
 
 	<!-- 顶部 -->
 	<div class="layui-header">
@@ -43,14 +43,14 @@
 			<li class="layui-nav-item layui-hide-xs">
 				<a href="javascript:;">
 					<img src="http://q.qlogo.cn/qqapp/101235792/5F344D27449D79D64FE873AF8E907139/100" class="layui-nav-img">
-					Admin
+					{{obj.realName}}
 				</a>
 				<dl class="layui-nav-child">
 					<dd><a href="javascript:;">基本资料</a></dd>
 					<dd><a href="javascript:;">安全设置</a></dd>
 				</dl>
 			</li>
-			<li class="layui-nav-item layui-hide-xs"><a href="javascript:;"><i class="fa fa-sign-out"></i> 退出</a></li>
+			<li class="layui-nav-item layui-hide-xs"><a href="javascript:logout();"><i class="fa fa-sign-out"></i> 退出</a></li>
 		</ul>
 	</div>
 
@@ -101,6 +101,49 @@
         window.location.href='login.html';
     }
 </script>
+
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript" src="js/ajax_utils.js"></script>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data:{
+            obj:{}
+        }
+    });
+
+    $.myAjaxData({
+        url:'//auth/rest/zh/latest/login/get',
+        type:'get',
+        successBack:function (data) {
+            //{"companyId":1,"loginName":"admin","realName":"超级管理员","type":0,"uid":"admin","updateTime":1514186979000}
+            window.localStorage.auth=JSON.stringify(data);
+            app.obj = data;
+            app.$nextTick(function () {
+
+            });
+
+        },
+        failBack:function (code,msg) {
+            layer.msg(msg, {icon: 2,time:2000});
+        }
+
+    });
+
+
+    function logout() {
+        layer.confirm('确定退出当前账号？',{title:'提示'}, function (index) {
+            window.localStorage.access_token=null;
+            window.location.reload();
+
+        });
+    }
+
+
+
+</script>
+
 
 </body>
 </html>

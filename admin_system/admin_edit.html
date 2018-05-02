@@ -44,9 +44,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">所属角色</label>
             <div class="layui-input-block">
-                <template v-for="item in roleList">
-                   <input v-model="item.roleList" type="radio" name="roleId" v-bind:value="item.uid"   v-bind:title="item.roleName">
-                </template>
+                <input v-for="item in roleList" type="radio" name="roleId" value="男" :value="item.uid" :title="item.roleName" :checked="item.checked">
             </div>
         </div>
 
@@ -77,32 +75,54 @@
         el: '#app',
         data:{
             obj:{},
-            roleList: [
-                { uid: '3ba700bd-5640-4264-a197-a9f5be8192fb' ,roleName:'平台管理员'}
-            ]
+            roleList: []
         }
     });
 
-    if(id){
-        $.myAjaxData({
-            url:'/auth/rest/zh/latest/auth/admin/get',
-            data:{uid:id},
-            type:'get',
-            successBack:function (data) {
-                app.obj = data;
-                app.$nextTick(function () {
-                    $.myEdit();
-                });
 
-            },
-            failBack:function (code,msg) {
-                layer.msg(msg, {icon: 2,time:2000});
-            }
+    $.myAjaxData({
+        url:'/auth/rest/zh/latest/auth/role/all',
+        data:{adminId:id},
+        type:'get',
+        successBack:function (data) {
+            app.roleList = data;
+            app.$nextTick(function () {
 
-        });
-    }else{
-        $.myEdit();
+                loadEdit();
+
+
+            });
+        },
+        failBack:function (code,msg) {
+            layer.msg(msg, {icon: 2,time:2000});
+        }
+
+    });
+
+
+    function loadEdit() {
+        if(id){
+            $.myAjaxData({
+                url:'/auth/rest/zh/latest/auth/admin/get',
+                data:{uid:id},
+                type:'get',
+                successBack:function (data) {
+                    app.obj = data;
+                    app.$nextTick(function () {
+                        $.myEdit();
+                    });
+
+                },
+                failBack:function (code,msg) {
+                    layer.msg(msg, {icon: 2,time:2000});
+                }
+
+            });
+        }else{
+            $.myEdit();
+        }
     }
+
 
 
 
