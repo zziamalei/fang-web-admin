@@ -93,5 +93,14 @@
 	<i class="layui-icon">&#xe602;</i>
 </div>
 <div class="site-mobile-shade"></div>
+
+<script>
+
+    var token=window.localStorage.access_token;
+    if( token == null || token == 'null'){
+        window.location.href='login.html';
+    }
+</script>
+
 </body>
 </html>

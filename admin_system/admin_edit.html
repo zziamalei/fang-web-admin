@@ -13,36 +13,45 @@
 
 
 
-<form class="layui-form" action="/auth/rest/zh/latest/auth/role/save">
+<form class="layui-form" action="/auth/rest/zh/latest/auth/admin/save">
 
     <input name="uid" type="hidden" v-model="obj.uid">
 
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">角色名称</label>
+            <label class="layui-form-label">登录名</label>
             <div class="layui-input-inline">
-                <input type="text" name="roleName"  v-model="obj.roleName" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="text" name="loginName"  v-model="obj.loginName" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
+
         <div class="layui-inline">
-            <label class="layui-form-label">角色类型</label>
-
-            <div class="layui-input-block">
-                <input type="radio" name="roleType" value="platform_admin" title="平台管理员" :checked="null==obj.roleType||obj.roleType==0">
-              <!--  <input type="radio" name="roleType" value="platform_user" title="平台用户":checked="obj.roleType==1">-->
-                <input type="radio" name="roleType" value="operator_admin" title="运营商管理员" :checked="obj.roleType==4">
+            <label class="layui-form-label">联系方式</label>
+            <div class="layui-input-inline">
+                <input type="text" name="phone"  v-model="obj.phone" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
-
         </div>
+
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">昵称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="realName"  v-model="obj.realName" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">所属角色</label>
+            <div class="layui-input-block">
+                <template v-for="item in roleList">
+                   <input v-model="item.roleList" type="radio" name="roleId" v-bind:value="item.uid"   v-bind:title="item.roleName">
+                </template>
+            </div>
+        </div>
+
     </div>
 
-
-    <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">角色描述</label>
-        <div class="layui-input-block">
-            <textarea name="description" v-model="obj.description" placeholder="请输入角色描述" class="layui-textarea"></textarea>
-        </div>
-    </div>
 
 
     <div class="layui-footer">
@@ -67,14 +76,16 @@
     var app = new Vue({
         el: '#app',
         data:{
-            obj:{}
+            obj:{},
+            roleList: [
+                { uid: '3ba700bd-5640-4264-a197-a9f5be8192fb' ,roleName:'平台管理员'}
+            ]
         }
     });
 
     if(id){
-
         $.myAjaxData({
-            url:'/auth/rest/zh/latest/auth/role/get',
+            url:'/auth/rest/zh/latest/auth/admin/get',
             data:{uid:id},
             type:'get',
             successBack:function (data) {

@@ -1,5 +1,8 @@
 var apiRoot='http://localhost:8083';
 
+var access_token= window.localStorage.access_token;
+
+
 $.extend({
     myAjaxList: function(options) {
 
@@ -18,7 +21,7 @@ $.extend({
             type: options.type,
             url: apiRoot+options.url,
             beforeSend: function(request) {
-                request.setRequestHeader("access_token", "1");
+                request.setRequestHeader("access_token", access_token);
             },
             data: options.data,
 
@@ -47,9 +50,23 @@ $.extend({
             type: options.type,
             url: apiRoot+options.url,
             data: options.data,
+            beforeSend: function(request) {
+                request.setRequestHeader("access_token", access_token);
+            },
             success: function(data){
                 try{
                     var  backData=JSON.parse(data);
+                    if(backData.code==20001){
+                        layer.msg('登录超时',{time:1500},function () {
+                            window.localStorage.access_token=null;
+                            parent.parent.window.location.href='/admin-web/login.html';
+                            parent.window.location.href='/admin-web/login.html';
+                            window.location.href='/admin-web/login.html';
+                        });
+
+                        return;
+                    }
+
                     options.successBack(backData.returnData);
                 }catch(err)
                 {
@@ -81,14 +98,25 @@ $.extend({
             type: options.type,
             url: apiRoot+options.url,
             data: options.data,
-            headers:{access_token:"1"},
+            headers:{access_token:access_token},
             beforeSend: function(request) {
-                request.setRequestHeader("access_token", "1");
+                request.setRequestHeader("access_token", access_token);
             },
             success: function(data){
                var  backData=JSON.parse(data);
+
+                if(backData.code==20001){
+                    layer.msg('登录超时',{time:1500},function () {
+                        window.localStorage.access_token=null;
+                        parent.parent.window.location.href='/admin-web/login.html';
+                        parent.window.location.href='/admin-web/login.html';
+                        window.location.href='/admin-web/login.html';
+                    });
+                    return;
+                }
+
                 if(backData.code=='0'){
-                    options.successBack(backData.msg);
+                    options.successBack(backData.msg,backData.returnData);
                 }else{
                     options.failBack(backData.code,backData.msg);
                 }
@@ -132,7 +160,7 @@ $.extend({
                 elem: '#'+options.id
                 // ,height: 315
                 ,url:apiRoot+ options.url //数据接口
-                ,headers: {access_token: '1'}
+                ,headers: {access_token: access_token}
                 ,page: true //开启分页
                 ,request: {
                     pageName: 'pageNum' //页码的参数名称，默认：page
@@ -183,7 +211,7 @@ $.extend({
                         area: [areaWidth, areaHeight],
                         fixed: false, //不固定
                         maxmin: true,
-                        content: $('a[lay-event=' + layEvent + ']').attr('url') + '?' + name+ '=' + value
+                        content: url
                     });
 
                 } else if (layEvent === 'confirm') { //删除
@@ -267,8 +295,6 @@ $.extend({
 
 
 
-
-
         var form
         layui.use(['form', 'layedit', 'laydate'], function(){
             form = layui.form
@@ -301,6 +327,9 @@ $.extend({
                     url:$('.layui-form').attr('action'),
                     data:data.field,
                     type:'post',
+                    beforeSend: function(request) {
+                        request.setRequestHeader("access_token", access_token);
+                    },
                     successBack:function (msg) {
                         layer.msg(msg, {icon: 1,time:1000},function () {
                             parent.table.reload('table');
@@ -326,5 +355,11 @@ function GetQueryString(name)
 {
     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
+    if(r!=null)return  unescape(r[2]); return null;
+}
+function GetParentQueryString(name)
+{
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = parent.window.location.search.substr(1).match(reg);
     if(r!=null)return  unescape(r[2]); return null;
 }

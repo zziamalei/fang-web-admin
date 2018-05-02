@@ -170,6 +170,17 @@ layui.define(["laytpl", "laypage", "layer", "form"], function(e) {
                 dataType: "json",
                 headers: n.headers || {},
                 success: function(t) {
+                    if(t.code==20001){
+                        layer.msg('登录超时',{time:1500},function () {
+                            window.localStorage.access_token=null;
+                            parent.parent.window.location.href='/admin-web/login.html';
+                            parent.window.location.href='/admin-web/login.html';
+                            window.location.href='/admin-web/login.html';
+                        });
+                        return;
+                    }
+
+
                     layer.close(indexLoad);
                     $.extend(t,{data:t.returnData.list,count:t.returnData.total});
 
