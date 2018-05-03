@@ -26,14 +26,17 @@ layui.define(['element',"fsConfig","fsCommon"], function(exports){
 				{"menuId":"jueseguanli","menuName":"角色管理","menuIcon":"fa-cog","menuHref":"admin_system/role_list.html","parentMenuId":"xitongguanli"},
 				{"menuId":"caozuoyuanguanli","menuName":"操作员管理","menuIcon":"fa-cog","menuHref":"admin_system/admin_list.html","parentMenuId":"xitongguanli"},
 
+                {"menuId":"ziyuanguanlki","menuName":"资源管理","menuIcon":"fa-cog","menuHref":"","parentMenuId":"kongzhitai"},
+                {"menuId":"gongsiguanli","menuName":"公司管理","menuIcon":"fa-cog","menuHref":"admin_system/company_list.html","parentMenuId":"ziyuanguanlki"},
+                {"menuId":"yingyongguanli","menuName":"应用管理","menuIcon":"fa-cog","menuHref":"admin_system/role_list.html","parentMenuId":"ziyuanguanlki"},
 
 
 
-                {"menuId":"canshushezhi","menuName":"系统设置","menuIcon":"fa-cog","menuHref":"hnt_system/config/system_config.html","parentMenuId":"kongzhitai"},
-              /*  {"menuId":"wenducaiji_01","menuName":"温度采集","menuIcon":"<i class=\"layui-icon\">&#xe61c;</i>","menuHref":"404.html","parentMenuId":"kongzhitai"},*/
-                {"menuId":"xiangmuguanli","menuName":"项目管理","menuIcon":"fa-cog","menuHref":"hnt_system/project/index.html","parentMenuId":"kongzhitai"},
-                {"menuId":"gongchengguanli","menuName":"工程管理","menuIcon":"fa-cog","menuHref":"hnt_system/project_item/index.html","parentMenuId":"kongzhitai"},
-                {"menuId":"shikuaiguanli","menuName":"试块管理","menuIcon":"fa-cog","menuHref":"hnt_system/block/index.html","parentMenuId":"kongzhitai"}
+                /* {"menuId":"canshushezhi","menuName":"系统设置","menuIcon":"fa-cog","menuHref":"hnt_system/config/system_config.html","parentMenuId":"kongzhitai"},
+           {"menuId":"wenducaiji_01","menuName":"温度采集","menuIcon":"<i class=\"layui-icon\">&#xe61c;</i>","menuHref":"404.html","parentMenuId":"kongzhitai"},
+              {"menuId":"xiangmuguanli","menuName":"项目管理","menuIcon":"fa-cog","menuHref":"hnt_system/project/index.html","parentMenuId":"kongzhitai"},
+              {"menuId":"gongchengguanli","menuName":"工程管理","menuIcon":"fa-cog","menuHref":"hnt_system/project_item/index.html","parentMenuId":"kongzhitai"},
+              {"menuId":"shikuaiguanli","menuName":"试块管理","menuIcon":"fa-cog","menuHref":"hnt_system/block/index.html","parentMenuId":"kongzhitai"}*/
 
              /*   ,{"menuId":"1","menuName":"控制台1","menuIcon":"fa-cog","menuHref":"","parentMenuId":"0"},
 				{"menuId":"2","menuName":"测试","menuIcon":"","menuHref":"","parentMenuId":"0"},

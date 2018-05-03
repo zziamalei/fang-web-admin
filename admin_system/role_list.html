@@ -50,11 +50,11 @@
 
             ,{field: 'roleType', title: '角色类型',sort: true,templet: function(d){
                 if(d.roleType==0)return '平台管理员'
-                if(d.roleType==1)return '平台用户'
+                if(d.roleType==1)return '平台操作员'
                 if(d.roleType==2)return '一级代理商'
                 if(d.roleType==3)return '二级代理商'
-                if(d.roleType==4)return '运营商管理员'
-                if(d.roleType==5)return '运营商用户'
+                if(d.roleType==4)return '运营商平台管理员'
+                if(d.roleType==5)return '运营商平台操作员'
             }}
             ,{field: 'description', title: '角色描述', sort: true}
             ,{fixed: 'right', width:200, align:'center', toolbar: '#barDemo'} //这里的toolbar值是模板元素的选择器

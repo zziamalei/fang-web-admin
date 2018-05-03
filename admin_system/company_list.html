@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>列表</title>
+    <link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css" media="all"/>
+</head>
+<body style="padding-top: 10px;padding-left: 10px;padding-right: 10px">
+
+
+
+<a class="layui-btn layui-btn-xs" lay-event="open" url="company_edit.html" areaHeight="60%" areaWidth="70%" title="新增公司" >新增</a>
+
+
+<table id="table" lay-filter="table"></table>
+
+<script type="text/javascript" src="../plugins/layui/layui.js"></script>
+<script type="text/javascript" src="../plugins/jquery/jquery.min.js"></script>
+
+
+<script type="text/javascript" src="../js/ajax_utils.js"></script>
+
+
+
+
+<script type="text/html" id="barDemo">
+
+    <a class="layui-btn layui-btn-xs" lay-event="open1" url="company_edit.html" areaHeight="60%" areaWidth="70%" idName="uid" title="编辑公司">编辑</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" onclick="updatePwd('{{d.account}}')" areaHeight="70%" areaWidth="70%"  idName="uid" title="权限设置" reflush="false">重置密码</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="confirm" url="/auth/rest/zh/latest/auth/company/del" idName="uid">删除</a>
+
+</script>
+
+<script>
+
+    var table;
+    $.myList({
+        setlayerTable:function (obj) {
+            table=obj;
+        },
+        id:'table',
+        url:'/auth/rest/zh/latest/auth/company/list',
+        cols:[ //表头
+//                {field: 'uid', title: 'ID',  sort: true, fixed: 'left',width:'10%'}
+            {field: 'name', title: '公司名称', sort: true },
+            {field: 'account', title: '登录账号', sort: true },
+            {field: 'contactWay', title: '联系方式', sort: true },
+            {field: 'enableStart', title: '有效开始', sort: true },
+            {field: 'enableEnd', title: '有效结束', sort: true }
+
+            ,{fixed: 'right', width:200, align:'center', toolbar: '#barDemo'} //这里的toolbar值是模板元素的选择器
+        ],
+        tool:true,
+        bindClickOpen:'open'
+    });
+
+
+
+    function updatePwd(account) {
+        //prompt层
+        layer.prompt({title: '请输入新密码，并确认', formType: 1}, function(pass, index){
+            layer.close(index);
+            resetPwd(account,pass);
+        });
+    }
+
+    function resetPwd(account,password) {
+
+        if(null==password||password==''||password.length<6){
+
+//            PooboPlugin.toast({icon: 5,msg:'密码长度至少6位'});
+            layer.msg('密码长度至少6位',{time:1500},function () {
+                updatePwd(account);
+            });
+
+            return;
+        }
+
+
+    }
+
+
+
+</script>
+
+
+
+</body>
+</html>

@@ -13,43 +13,63 @@
 
 
 
-<form class="layui-form" action="/auth/rest/zh/latest/auth/admin/save">
+<form class="layui-form" action="/auth/rest/zh/latest/auth/company/save">
 
     <input name="uid" type="hidden" v-model="obj.uid">
 
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">登录名</label>
+            <label class="layui-form-label">登录账号</label>
             <div class="layui-input-inline">
-                <input type="text" name="loginName"  v-model="obj.loginName" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="text" name="account"  v-model="obj.account" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">角色类型</label>
+
+            <div class="layui-input-block">
+                <input v-for="item in roleList" type="radio" name="roleIds" value="男" :value="item.uid" :title="item.roleName" :checked="item.checked">
+            </div>
+
+        </div>
+    </div>
+    <div class="layui-form-item">
+
+        <div class="layui-inline">
+            <label class="layui-form-label">公司名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name"  v-model="obj.name " minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-inline">
-            <label class="layui-form-label">联系方式</label>
+            <label class="layui-form-label">公司地址</label>
             <div class="layui-input-inline">
-                <input type="text" name="phone"  v-model="obj.phone" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="text" name="address"  v-model="obj.address" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
 
     </div>
     <div class="layui-form-item">
+
         <div class="layui-inline">
-            <label class="layui-form-label">昵称</label>
+            <label class="layui-form-label">联系方式</label>
             <div class="layui-input-inline">
-                <input type="text" name="realName"  v-model="obj.realName" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="text" name="contactWay"  v-model="obj.contactWay" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
 
-        <div class="layui-inline">
-            <label class="layui-form-label">所属角色</label>
-            <div class="layui-input-block">
-                <input v-for="item in roleList" type="radio" name="roleId"  :value="item.uid" :title="item.roleName" :checked="item.checked">
-            </div>
-        </div>
+
 
     </div>
 
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">公司简介</label>
+        <div class="layui-input-block">
+            <textarea name="remark" v-model="obj.remark" placeholder="请输入角色描述" class="layui-textarea"></textarea>
+        </div>
+    </div>
 
 
     <div class="layui-footer">
@@ -79,10 +99,9 @@
         }
     });
 
-
     $.myAjaxData({
         url:'/auth/rest/zh/latest/auth/role/all',
-        data:{adminId:id,use:0},
+        data:{roleType:'operator_admin',use:1},
         type:'get',
         successBack:function (data) {
             app.roleList = data;
@@ -102,8 +121,9 @@
 
     function loadEdit() {
         if(id){
+
             $.myAjaxData({
-                url:'/auth/rest/zh/latest/auth/admin/get',
+                url:'/auth/rest/zh/latest/auth/company/get',
                 data:{uid:id},
                 type:'get',
                 successBack:function (data) {
@@ -121,6 +141,7 @@
         }else{
             $.myEdit();
         }
+
     }
 
 
