@@ -28,9 +28,17 @@
             <label class="layui-form-label">角色类型</label>
 
             <div class="layui-input-block">
-                <input v-if="auth.type==0" type="radio" name="roleType" value="platform_user" title="平台操作员" :checked="null==obj.roleType||obj.roleType==0">
-                <input v-if="auth.type==0|| auth.type==4"type="radio" name="roleType" value="operator_admin" title="运营商平台管理员" :checked="(null==obj.roleType && auth.type==4)||obj.roleType==4">
-                <input v-if="auth.type==4" type="radio" name="roleType" value="operator_user" title="运营商平台操作员" :checked="null==obj.roleType||obj.roleType==5">
+
+                <input v-if="auth.type==0 && (null==obj.roleType||obj.roleType==1)" type="radio" name="roleType" value="platform_user" title="平台操作员" checked="">
+                <input v-if="auth.type==0  && !(null==obj.roleType||obj.roleType==1)" type="radio" name="roleType" value="platform_user" title="平台操作员" >
+
+
+                <input v-if="(auth.type==0|| auth.type==4) && (null==obj.roleType || obj.roleType==4)"type="radio" name="roleType" value="operator_admin" title="运营商管理员" checked="">
+                <input v-if="(auth.type==0|| auth.type==4) && !(null==obj.roleType || obj.roleType==4)"type="radio" name="roleType" value="operator_admin" title="运营商管理员" >
+
+                <input v-if="auth.type==4 && (null!=obj.roleType && obj.roleType==5)" type="radio" name="roleType" value="operator_user" title="平台操作员" checked="">
+                <input v-if="auth.type==4 && !(null!=obj.roleType && obj.roleType==5)" type="radio" name="roleType" value="operator_user" title="平台操作员" >
+
             </div>
 
         </div>
@@ -82,6 +90,8 @@
                 app.obj = data;
                 app.$nextTick(function () {
                     $.myEdit();
+
+
                 });
 
             },
