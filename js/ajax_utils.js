@@ -98,12 +98,18 @@ $.extend({
             type: options.type,
             url: apiRoot+options.url,
             data: options.data,
+            traditional:true,
             headers:{access_token:access_token},
             beforeSend: function(request) {
                 request.setRequestHeader("access_token", access_token);
             },
             success: function(data){
-               var  backData=JSON.parse(data);
+                var backData=data;
+                try {
+                     backData = JSON.parse(data);
+                } catch (e) {
+                }
+
 
                 if(backData.code==20001){
                     layer.msg('登录超时',{time:1500},function () {
@@ -325,7 +331,7 @@ $.extend({
 
                 $.myAjax({
                     url:$('.layui-form').attr('action'),
-                    data:data.field,
+                    data:$('.layui-form').serialize(),
                     type:'post',
                     beforeSend: function(request) {
                         request.setRequestHeader("access_token", access_token);

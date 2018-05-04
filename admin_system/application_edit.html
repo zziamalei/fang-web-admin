@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>编辑页面</title>
+    <link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="all"/>
+
+</head>
+<body>
+
+<div id="app">
+
+
+
+<form class="layui-form" action="/auth/rest/zh/latest/auth/application/save">
+
+    <input name="appId" type="hidden" v-model="obj.appId">
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">应用名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="appName"  v-model="obj.appName" minlength="2" maxlength="20" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">秘钥</label>
+            <div class="layui-input-inline">
+                <input type="text" name="secret"  v-model="obj.secret" minlength="16" maxlength="16" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="layui-form-item" pane="">
+        <label class="layui-form-label">api权限</label>
+        <div class="layui-input-block">
+            <template v-for="( mp,index) in allP">
+
+                <input  type="checkbox" v-if="mp.checked"  :value="mp.id" name="permissionList" lay-skin="primary" :title="mp.name"  checked="" >
+                <input  type="checkbox" v-if="!mp.checked"  :value="mp.id" name="permissionList" lay-skin="primary" :title="mp.name"  >
+            </template>
+
+        </div>
+    </div>
+
+
+
+
+    <div class="layui-footer">
+        <div class="footer-btn">
+            <button class="layui-btn " lay-submit="" lay-filter="save">保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <label class="layui-btn layui-btn-danger close-btn">关闭</label>
+        </div>
+        <!-- 底部固定区域 -->
+
+    </div>
+</form>
+
+</div>
+
+<script type="text/javascript" src="../plugins/layui/layui.js"></script>
+<script type="text/javascript" src="../plugins/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/vue.js"></script>
+<script type="text/javascript" src="../js/ajax_utils.js"></script>
+<script>
+    var perm=[{id:'face',name:'人脸比对',checked:false},{id:'kaoqin',name:'考勤',checked:false},{id:'fangke',name:'访客',checked:false}];
+    var id= GetQueryString('appId');
+    var app = new Vue({
+        el: '#app',
+        data:{
+            allP:[],
+            obj:{},
+            auth:getAuth()
+        }
+
+    });
+    app.allP=perm;
+    if(id){
+
+        $.myAjaxData({
+            url:'/auth/rest/zh/latest/auth/application/get',
+            data:{uid:id},
+            type:'get',
+            successBack:function (data) {
+                app.obj = data;
+
+                if(data.permissionList){
+                    $(perm).each(function (index1,o1) {
+                        $(data.permissionList).each(function (index2,o2) {
+
+                            if(perm[index1].id==o2){
+                                perm[index1].checked=true;
+                            }
+                        });
+                    });
+                }
+                app.allP=perm;
+                app.$nextTick(function () {
+                    $.myEdit();
+
+
+                });
+
+            },
+            failBack:function (code,msg) {
+                layer.msg(msg, {icon: 2,time:2000});
+            }
+
+        });
+    }else{
+        $.myEdit();
+    }
+
+
+
+</script>
+
+
+</body>
+</html>

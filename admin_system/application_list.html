@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>列表</title>
+    <link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css" media="all"/>
+</head>
+<body style="padding-top: 10px;padding-left: 10px;padding-right: 10px">
+
+
+
+<a class="layui-btn layui-btn-xs" lay-event="open" url="application_edit.html" areaHeight="50%" areaWidth="70%" title="新增应用" >新增</a>
+
+
+<table id="table" lay-filter="table"></table>
+
+<script type="text/javascript" src="../plugins/layui/layui.js"></script>
+<script type="text/javascript" src="../plugins/jquery/jquery.min.js"></script>
+
+
+<script type="text/javascript" src="../js/ajax_utils.js"></script>
+
+
+
+
+<script type="text/html" id="barDemo">
+
+    <a class="layui-btn layui-btn-xs" lay-event="open1" url="application_edit.html" areaHeight="50%" areaWidth="70%" idName="appId" title="编辑应用">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="confirm" url="/auth/rest/zh/latest/auth/application/del" idName="appId">删除</a>
+
+    <!-- 这里同样支持 laytpl 语法，如： -->
+    {{#  if(d.auth > 2){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="check">审核</a>
+    {{#  } }}
+</script>
+
+<script>
+
+    var table;
+    $.myList({
+        setlayerTable:function (obj) {
+            table=obj;
+        },
+        id:'table',
+        url:'/auth/rest/zh/latest/auth/application/list',
+        cols:[ //表头
+//                {field: 'uid', title: 'ID',  sort: true, fixed: 'left',width:'10%'}
+            {field: 'appName', title: '应用名称', sort: true }
+            , {field: 'appId', title: 'appId', sort: true }
+            , {field: 'secret', title: 'secret', sort: true }
+            , {field: 'usefulStart', title: '有效期开始', sort: true }
+            , {field: 'usefulEnd', title: '有效期结束', sort: true }
+
+            ,{field: 'dataStatus', title: '状态',sort: true,templet: function(d){
+                if(d.dataStatus==0)return '正常'
+                if(d.dataStatus==1)return '冻结'
+
+            }}
+            ,{fixed: 'right', width:200, align:'center', toolbar: '#barDemo'} //这里的toolbar值是模板元素的选择器
+        ],
+        tool:true,
+        bindClickOpen:'open'
+    });
+
+
+</script>
+
+
+
+</body>
+</html>
