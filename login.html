@@ -203,6 +203,9 @@
                    function adminLogin() {
                        //登陆
                        var JsonData = { login_name: encryptPadding(login), password: encryptPadding(pwd), code: code,key:pbkey,security_id:security_id };
+
+                       alert(JsonData);
+
                        $.myAjax({
                            url: '/auth/rest/zh/latest/login/login',
                            data:JsonData,

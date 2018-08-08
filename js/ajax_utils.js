@@ -1,4 +1,4 @@
-var apiRoot='http://localhost:8083';
+var apiRoot='http://localhost:8089';
 
 var access_token= window.localStorage.access_token;
 
@@ -26,7 +26,7 @@ $.extend({
             data: options.data,
 
             success: function(data){
-                options.successBack(data.returnData);
+                options.successBack(data.data);
             }
         });
 
@@ -50,13 +50,14 @@ $.extend({
             type: options.type,
             url: apiRoot+options.url,
             data: options.data,
+            contentType:'application/json;charset=utf-8',
+            dataType:'json',
             beforeSend: function(request) {
                 request.setRequestHeader("access_token", access_token);
             },
             success: function(data){
                 try{
-                    var  backData=JSON.parse(data);
-                    if(backData.code==20001){
+                    if(data.code==20001){
                         layer.msg('登录超时',{time:1500},function () {
                             window.localStorage.access_token=null;
                             parent.parent.window.location.href='/admin-web/login.html';
@@ -67,10 +68,10 @@ $.extend({
                         return;
                     }
 
-                    options.successBack(backData.returnData);
+                    options.successBack(data.data);
                 }catch(err)
                 {
-                    options.successBack(data.returnData);
+                    options.successBack(data.data);
                 }
 
 
@@ -99,6 +100,8 @@ $.extend({
             url: apiRoot+options.url,
             data: options.data,
             traditional:true,
+            contentType:'application/json;charset=utf-8',
+            dataType:'json',
             headers:{access_token:access_token},
             beforeSend: function(request) {
                 request.setRequestHeader("access_token", access_token);
@@ -122,7 +125,7 @@ $.extend({
                 }
 
                 if(backData.code=='0'){
-                    options.successBack(backData.msg,backData.returnData);
+                    options.successBack(backData.msg,backData.data);
                 }else{
                     options.failBack(backData.code,backData.msg);
                 }
