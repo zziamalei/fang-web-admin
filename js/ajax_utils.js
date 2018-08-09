@@ -215,10 +215,11 @@ $.extend({
 
 
                 var url=$('a[lay-event=' + layEvent + ']').attr('url') ;
-                if(name){
-                    url+='/'  + value;
-                }
+
                 if (layEvent === 'open' || layEvent === 'open1' || layEvent === 'open2' || layEvent === 'open3' || layEvent === 'open4') { //查看
+                    if(name){
+                        url+='?id='  + value;
+                    }
                     layer.open({
                         type: 2,
                         title:title,
@@ -229,6 +230,9 @@ $.extend({
                     });
 
                 } else if (layEvent === 'confirm') { //删除
+                    if(name){
+                        url+='/'  + value;
+                    }
                     layer.confirm('确定删除本行？',{title:'提示'}, function (index) {
 
                         $.myAjax({
@@ -286,7 +290,7 @@ $.extend({
     myEdit:function (options) {
         var _default = {
             title : '',
-            id : 'uid',
+            id : 'id',
             url : '',
             successBack : function(){},
             failBack:function () {
@@ -317,6 +321,15 @@ $.extend({
                 ,laydate = layui.laydate;
 
 
+
+
+            //日期时间选择器
+            laydate.render({
+                elem: '.datetime'
+                ,type: 'datetime'
+            });
+
+
             //自定义验证规则
             form.verify({
                 title: function(value){
@@ -332,14 +345,16 @@ $.extend({
 
             //监听提交
             form.on('submit(save)', function(data){
+
                 layer.alert(JSON.stringify(data.field), {
                     title: '最终的提交信息'
                 });
 
 
+
                 $.myAjax({
                     url:$('.layui-form').attr('action'),
-                    data:$('.layui-form').serialize(),
+                    data:JSON.stringify(data.field),
                     type:'post',
                     beforeSend: function(request) {
                         request.setRequestHeader("access_token", access_token);
