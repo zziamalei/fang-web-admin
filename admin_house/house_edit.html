@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>编辑页面</title>
+    <link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="all"/>
+
+</head>
+<body>
+
+<div id="app">
+
+
+
+<form class="layui-form" action="/auth/rest/zh/latest/auth/admin/save">
+
+    <input name="uid" type="hidden" v-model="obj.uid">
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">登录名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="loginName"  v-model="obj.loginName" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">联系方式</label>
+            <div class="layui-input-inline">
+                <input type="text" name="phone"  v-model="obj.phone" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">昵称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="realName"  v-model="obj.realName" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">所属角色</label>
+            <div class="layui-input-block">
+                <input v-for="item in roleList" type="radio" name="roleId"  :value="item.uid" :title="item.roleName" :checked="item.checked">
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="layui-footer">
+        <div class="footer-btn">
+            <button class="layui-btn " lay-submit="" lay-filter="save">保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <label class="layui-btn layui-btn-danger close-btn">关闭</label>
+        </div>
+        <!-- 底部固定区域 -->
+
+    </div>
+</form>
+
+</div>
+
+<script type="text/javascript" src="../plugins/layui/layui.js"></script>
+<script type="text/javascript" src="../plugins/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/vue.js"></script>
+<script type="text/javascript" src="../js/ajax_utils.js"></script>
+<script>
+    var id= GetQueryString('uid');
+    var app = new Vue({
+        el: '#app',
+        data:{
+            obj:{},
+            roleList: []
+        }
+    });
+
+
+    $.myAjaxData({
+        url:'/auth/rest/zh/latest/auth/role/all',
+        data:{adminId:id,use:0},
+        type:'get',
+        successBack:function (data) {
+            app.roleList = data;
+            app.$nextTick(function () {
+
+                loadEdit();
+
+
+            });
+        },
+        failBack:function (code,msg) {
+            layer.msg(msg, {icon: 2,time:2000});
+        }
+
+    });
+
+
+    function loadEdit() {
+        if(id){
+            $.myAjaxData({
+                url:'/auth/rest/zh/latest/auth/admin/get',
+                data:{uid:id},
+                type:'get',
+                successBack:function (data) {
+                    app.obj = data;
+                    app.$nextTick(function () {
+                        $.myEdit();
+                    });
+
+                },
+                failBack:function (code,msg) {
+                    layer.msg(msg, {icon: 2,time:2000});
+                }
+
+            });
+        }else{
+            $.myEdit();
+        }
+    }
+
+
+
+
+</script>
+
+
+</body>
+</html>

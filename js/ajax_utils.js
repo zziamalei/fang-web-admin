@@ -170,16 +170,21 @@ $.extend({
                 // ,height: 315
                 ,url:apiRoot+ options.url //数据接口
                 ,headers: {access_token: access_token}
+                ,contentType:'application/json'
+                ,where:options.where
+                ,method:'post'
                 ,page: true //开启分页
                 ,request: {
-                    pageName: 'pageNum' //页码的参数名称，默认：page
-                    ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
+                    pageName: 'page' //页码的参数名称，默认：page
+                    ,limitName: 'size' //每页数据量的参数名，默认：limit
                 }
                 ,loading:true
                 ,response: {
                     statusName: 'code' //数据状态的字段名称，默认：code
                     ,statusCode: 0 //成功的状态码，默认：0
                     ,msgName: 'msg' //状态信息的字段名称，默认：msg
+                    // ,countName: 'data.totalElements' //数据总数的字段名称，默认：count
+                    // ,dataName:'data.content'
                 }
                 ,cols: [options.cols]
             });
@@ -211,7 +216,7 @@ $.extend({
 
                 var url=$('a[lay-event=' + layEvent + ']').attr('url') ;
                 if(name){
-                    url+='?' + name+ '=' + value;
+                    url+='/'  + value;
                 }
                 if (layEvent === 'open' || layEvent === 'open1' || layEvent === 'open2' || layEvent === 'open3' || layEvent === 'open4') { //查看
                     layer.open({

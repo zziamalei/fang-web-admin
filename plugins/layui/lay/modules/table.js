@@ -182,7 +182,7 @@ layui.define(["laytpl", "laypage", "layer", "form"], function(e) {
 
 
                     layer.close(indexLoad);
-                    $.extend(t,{data:t.returnData.list,count:t.returnData.total});
+                    $.extend(t,{data:t.data.content,count:t.data.totalElements});
 
 
                     t[r.statusName] != r.statusCode ? (a.renderForm(), a.layMain.html('<div class="' + f + '">' + (t[r.msgName] || "返回的数据状态异常") + "</div>")) : (a.renderData(t, e, t[r.countName]), d(), n.time = (new Date).getTime() - a.startTime + " ms"), i && l.close(i), "function" == typeof n.done && n.done(t, e, t[r.countName])
