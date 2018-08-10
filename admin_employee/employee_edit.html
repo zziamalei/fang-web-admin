@@ -13,16 +13,15 @@
 
 
 
-<form class="layui-form" action="/house/save">
+<form class="layui-form" action="/employee/save">
 
-    <input name="id" type="hidden" v-model="obj.id">
     <input name="version" type="hidden" v-model="obj.version">
 
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">工号</label>
             <div class="layui-input-inline">
-                <input type="text" name="jobNo"  v-model="obj.jobNo" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="text" name="id"  v-model="obj.id" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
 
@@ -36,7 +35,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">星级</label>
             <div class="layui-input-inline">
-                <input type="number" name="name"  v-model="obj.starNum" minlength="2" min="0"  max="5" lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="number" name="starNum"  v-model="obj.starNum" minlength="2" min="0"  max="5" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
 
@@ -75,18 +74,7 @@
 
 
     </div>
-    <div class="layui-form-item">
 
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">详情</label>
-            <div class="layui-input-block" id="div3">
-
-            </div>
-            <textarea hidden="hidden" id="text1" name="content" v-model="obj.content"></textarea>
-        </div>
-
-
-    </div>
 
     <div class="layui-footer">
         <div class="footer-btn">
@@ -118,16 +106,7 @@
             roleList: []
         }
     });
-    var E = window.wangEditor
-    var editor = new E('#div3')
-    var $text1 = $('#text1')
-    editor.customConfig.uploadImgShowBase64 = true   // 使用 base64 保存图片
-    editor.customConfig.onchange = function (html) {
-        // 监控变化，同步更新到 textarea
-        app.obj.content=html;
 
-    }
-    editor.create();
 
 
 
@@ -138,7 +117,7 @@
     function loadEdit() {
         if(id){
             $.myAjaxData({
-                url:'/house/get/'+id,
+                url:'/employee/get/'+id,
                 type:'get',
                 successBack:function (data) {
                     app.obj = data;
@@ -146,7 +125,7 @@
                         $.myEdit();
                     });
 
-                    editor.txt.html(app.obj.content)
+
                 },
                 failBack:function (code,msg) {
                     layer.msg(msg, {icon: 2,time:2000});
