@@ -1,11 +1,11 @@
 
 @font-face {
 	font-family: 'icomoon';
-	src:url('/Admin/Login/fonts/icomoon.eot?rretjt');
-	src:url('/Admin/Login/fonts/icomoon.eot?#iefixrretjt') format('embedded-opentype'),
-		url('/Admin/Login/fonts/icomoon.woff?rretjt') format('woff'),
-		url('/Admin/Login/fonts/icomoon.ttf?rretjt') format('truetype'),
-		url('/Admin/Login/fonts/icomoon.svg?rretjt#icomoon') format('svg');
+	src:url('/manage/Login/fonts/icomoon.eot?rretjt');
+	src:url('/manage/Login/fonts/icomoon.eot?#iefixrretjt') format('embedded-opentype'),
+		url('/manage/Login/fonts/icomoon.woff?rretjt') format('woff'),
+		url('/manage/Login/fonts/icomoon.ttf?rretjt') format('truetype'),
+		url('/manage/Login/fonts/icomoon.svg?rretjt#icomoon') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }

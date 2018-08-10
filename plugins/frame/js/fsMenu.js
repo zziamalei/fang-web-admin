@@ -22,14 +22,15 @@ layui.define(['element',"fsConfig","fsCommon"], function(exports){
 
                {"menuId":"kongzhitai","menuName":"控制台","menuIcon":"fa-cog","menuHref":"","parentMenuId":"0"},
                 {"menuId":"shouye","menuName":"首页","menuIcon":"&#xe68e;","menuHref":"hnt_system/index.html","parentMenuId":"kongzhitai"},
-                {"menuId":"xitongguanli","menuName":"系统管理","menuIcon":"fa-cog","menuHref":"","parentMenuId":"kongzhitai"},
+               /* {"menuId":"xitongguanli","menuName":"系统管理","menuIcon":"fa-cog","menuHref":"","parentMenuId":"kongzhitai"},
 				{"menuId":"jueseguanli","menuName":"角色管理","menuIcon":"fa-cog","menuHref":"admin_system/role_list.html","parentMenuId":"xitongguanli"},
 				{"menuId":"caozuoyuanguanli","menuName":"操作员管理","menuIcon":"fa-cog","menuHref":"admin_system/admin_list.html","parentMenuId":"xitongguanli"},
 
                 {"menuId":"ziyuanguanlki","menuName":"资源管理","menuIcon":"fa-cog","menuHref":"","parentMenuId":"kongzhitai"},
                 {"menuId":"gongsiguanli","menuName":"公司管理","menuIcon":"fa-cog","menuHref":"admin_system/company_list.html","parentMenuId":"ziyuanguanlki"},
-                {"menuId":"yingyongguanli","menuName":"应用管理","menuIcon":"fa-cog","menuHref":"admin_system/application_list.html","parentMenuId":"ziyuanguanlki"},
-                {"menuId":"fangchanguanli","menuName":"房产管理","menuIcon":"fa-cog","menuHref":"admin_house/house_list.html","parentMenuId":"kongzhitai"},
+                {"menuId":"yingyongguanli","menuName":"应用管理","menuIcon":"fa-cog","menuHref":"admin_system/application_list.html","parentMenuId":"ziyuanguanlki"},*/
+                {"menuId":"house","menuName":"房产管理","menuIcon":"fa-cog","menuHref":"admin_house/house_list.html","parentMenuId":"kongzhitai"},
+                {"menuId":"employee","menuName":"员工管理","menuIcon":"fa-cog","menuHref":"admin_employee/employee_list.html","parentMenuId":"kongzhitai"},
 
 
                 /* {"menuId":"canshushezhi","menuName":"系统设置","menuIcon":"fa-cog","menuHref":"hnt_system/config/system_config.html","parentMenuId":"kongzhitai"},

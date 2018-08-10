@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>编辑页面</title>
+    <link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="all"/>
+
+</head>
+<body>
+
+<div id="app">
+
+
+
+<form class="layui-form" action="/house/save">
+
+    <input name="id" type="hidden" v-model="obj.id">
+    <input name="version" type="hidden" v-model="obj.version">
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">工号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="jobNo"  v-model="obj.jobNo" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name"  v-model="obj.name" minlength="2" maxlength="10" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">星级</label>
+            <div class="layui-input-inline">
+                <input type="number" name="name"  v-model="obj.starNum" minlength="2" min="0"  max="5" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">入职时间</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input datetime" name="joinTime" v-model="obj.joinTime" lay-verify="required" placeholder="yyyy-MM-dd HH:mm:ss">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">排序</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" name="sortIndex" max="99999" v-model="obj.sortIndex" lay-verify="required" >
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">首页展示</label>
+            <div class="layui-input-inline">
+                <input type="checkbox" name="showIndex"  v-model="obj.showIndex" lay-skin="switch" lay-text="启用|关闭" checked/>
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="layui-form-item">
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">简介</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" name="simpleInfo"  v-model="obj.simpleInfo"  class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="layui-form-item">
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">详情</label>
+            <div class="layui-input-block" id="div3">
+
+            </div>
+            <textarea hidden="hidden" id="text1" name="content" v-model="obj.content"></textarea>
+        </div>
+
+
+    </div>
+
+    <div class="layui-footer">
+        <div class="footer-btn">
+            <button class="layui-btn " lay-submit="" lay-filter="save">保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <label class="layui-btn layui-btn-danger close-btn">关闭</label>
+        </div>
+        <!-- 底部固定区域 -->
+
+    </div>
+
+</form>
+
+
+
+</div>
+
+<script type="text/javascript" src="../plugins/layui/layui.js"></script>
+<script type="text/javascript" src="../plugins/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/vue.js"></script>
+<script src="//unpkg.com/wangeditor/release/wangEditor.min.js"></script>
+<script type="text/javascript" src="../js/ajax_utils.js"></script>
+<script>
+    var id= GetQueryString('id');
+    var app = new Vue({
+        el: '#app',
+        data:{
+            obj:{},
+            roleList: []
+        }
+    });
+    var E = window.wangEditor
+    var editor = new E('#div3')
+    var $text1 = $('#text1')
+    editor.customConfig.uploadImgShowBase64 = true   // 使用 base64 保存图片
+    editor.customConfig.onchange = function (html) {
+        // 监控变化，同步更新到 textarea
+        app.obj.content=html;
+
+    }
+    editor.create();
+
+
+
+    loadEdit();
+
+
+
+    function loadEdit() {
+        if(id){
+            $.myAjaxData({
+                url:'/house/get/'+id,
+                type:'get',
+                successBack:function (data) {
+                    app.obj = data;
+                    app.$nextTick(function () {
+                        $.myEdit();
+                    });
+
+                    editor.txt.html(app.obj.content)
+                },
+                failBack:function (code,msg) {
+                    layer.msg(msg, {icon: 2,time:2000});
+                }
+
+            });
+        }else{
+            $.myEdit();
+        }
+
+    }
+
+
+
+
+
+</script>
+
+
+</body>
+</html>
