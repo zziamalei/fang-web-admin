@@ -35,8 +35,23 @@
         <div class="layui-inline">
             <label class="layui-form-label">排序</label>
             <div class="layui-input-inline">
-                <input type="text" class="layui-input" name="sortIndex" max="99999" v-model="obj.sortIndex" lay-verify="required" >
+                <input type="number" class="layui-input" name="sortIndex" max="99999" v-model="obj.sortIndex" lay-verify="required" >
             </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">缩略图</label>
+            <div class="layui-input-inline">
+
+                <input type="hidden" name="thumbnailImage" v-model="obj.thumbnailImage">
+                <img id="thumbnailImage" v-bind:src="obj.thumbnailImage" style="height: 80px;width: 80px;">
+                <button type="button" class="layui-btn" id="test1">
+                    <i class="layui-icon">&#xe67c;</i>上传图片
+                </button>
+
+            </div>
+
+
         </div>
 
     </div>
@@ -135,6 +150,42 @@
 
     }
 
+    layui.use('upload', function(){
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            ,url: '/upload/' //上传接口
+            ,accept: 'images' //允许上传的文件类型
+            ,auto: false //选择文件后不自动上传
+            ,size: 500 //最大允许上传的文件大小
+            ,choose: function(obj){
+                //将每次选择的文件追加到文件队列
+                var files = obj.pushFile();
+
+                //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                obj.preview(function(index, file, result){
+                    console.log(index); //得到文件索引
+                    console.log(file); //得到文件对象
+                    console.log(result); //得到文件base64编码，比如图片
+                    $('#thumbnailImage').attr('src',result);
+                    $('input[name="thumbnailImage"]').val(result);
+
+                    //这里还可以做一些 append 文件列表 DOM 的操作
+
+                    //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
+                    //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
+                });
+            }
+            ,done: function(res){
+                //上传完毕回调
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
+    });
 
 
 
