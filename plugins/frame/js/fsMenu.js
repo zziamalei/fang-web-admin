@@ -29,6 +29,7 @@ layui.define(['element',"fsConfig","fsCommon"], function(exports){
                 {"menuId":"ziyuanguanlki","menuName":"资源管理","menuIcon":"fa-cog","menuHref":"","parentMenuId":"kongzhitai"},
                 {"menuId":"gongsiguanli","menuName":"公司管理","menuIcon":"fa-cog","menuHref":"admin_system/company_list.html","parentMenuId":"ziyuanguanlki"},
                 {"menuId":"yingyongguanli","menuName":"应用管理","menuIcon":"fa-cog","menuHref":"admin_system/application_list.html","parentMenuId":"ziyuanguanlki"},*/
+                {"menuId":"company","menuName":"公司管理","menuIcon":"fa-cog","menuHref":"admin_company/company_edit.html?id=1","parentMenuId":"kongzhitai"},
                 {"menuId":"house","menuName":"房产管理","menuIcon":"fa-cog","menuHref":"admin_house/house_list.html","parentMenuId":"kongzhitai"},
                 {"menuId":"employee","menuName":"员工管理","menuIcon":"fa-cog","menuHref":"admin_employee/employee_list.html","parentMenuId":"kongzhitai"},
 

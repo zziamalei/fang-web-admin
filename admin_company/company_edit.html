@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>编辑页面</title>
+    <link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="all"/>
+
+</head>
+<body>
+
+<div id="app">
+
+
+
+<form class="layui-form" action="/company/save">
+
+    <input name="id" type="hidden" v-model="obj.id">
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">公司地址</label>
+            <div class="layui-input-inline">
+                <input type="text" name="address"  v-model="obj.address" minlength="2" maxlength="50" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">联系我们</label>
+            <div class="layui-input-inline">
+                <input type="text" name="contentUs"  v-model="obj.contentUs" minlength="2" maxlength="50" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">手机</label>
+            <div class="layui-input-inline">
+                <input type="text" name="phone"  v-model="obj.phone" minlength="2" maxlength="50" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-inline">
+            <label class="layui-form-label">微信</label>
+            <div class="layui-input-inline">
+                <input type="text" name="wechat"  v-model="obj.wechat" minlength="2" maxlength="50" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-inline">
+            <label class="layui-form-label">微信二维码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="wechatUrl"  v-model="obj.wechatUrl" minlength="2" maxlength="100" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">地图坐标</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="lat"  v-model="obj.lat" >
+                <input type="hidden" name="lng"  v-model="obj.lng" >
+                <label id="selectGps" class="layui-btn layui-btn-normal layui-btn-radius">选择坐标</label>
+            </div>
+        </div>
+
+
+
+
+            <div class="layui-inline">
+                <label class="layui-form-label">地图简介</label>
+                <div class="layui-input-inline">
+                    <textarea placeholder="请输入内容" name="mapShowInfo"  v-model="obj.mapShowInfo"  class="layui-textarea"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">公司简介</label>
+                <div class="layui-input-inline">
+                    <textarea placeholder="请输入内容" name="simpleInfo"  v-model="obj.simpleInfo"  class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">工作时间</label>
+                <div class="layui-input-inline">
+                    <textarea placeholder="请输入内容" name="workTime"  v-model="obj.workTime"  class="layui-textarea"></textarea>
+                </div>
+            </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-form-mid layui-word-aux">微信二维码上传地址:<a href="https://picb.cc/" target="_blank">https://picb.cc/</a></div>
+        </div>
+
+    <div class="layui-footer">
+        <div class="footer-btn">
+            <button class="layui-btn " lay-submit="" lay-filter="save">保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+        <!-- 底部固定区域 -->
+
+    </div>
+
+</form>
+
+
+
+</div>
+
+<script type="text/javascript" src="../plugins/layui/layui.js"></script>
+<script type="text/javascript" src="../plugins/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/vue.js"></script>
+<script src="//unpkg.com/wangeditor/release/wangEditor.min.js"></script>
+<script type="text/javascript" src="../js/ajax_utils.js"></script>
+<script>
+    var id= GetQueryString('id');
+    var app = new Vue({
+        el: '#app',
+        data:{
+            obj:{},
+            roleList: []
+        }
+    });
+
+
+
+
+    loadEdit();
+
+
+
+    function loadEdit() {
+        if(id){
+            $.myAjaxData({
+                url:'/company/get/'+id,
+                type:'get',
+                successBack:function (data) {
+                    app.obj = data;
+                    app.$nextTick(function () {
+                        $.myEdit();
+                    });
+
+
+                },
+                failBack:function (code,msg) {
+                    layer.msg(msg, {icon: 2,time:2000});
+                }
+
+            });
+        }else{
+            $.myEdit();
+        }
+
+    }
+
+    layui.use('upload', function(){
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            ,url: '/upload/' //上传接口
+            ,accept: 'images' //允许上传的文件类型
+            ,auto: false //选择文件后不自动上传
+            ,size: 500 //最大允许上传的文件大小
+            ,choose: function(obj){
+                //将每次选择的文件追加到文件队列
+                var files = obj.pushFile();
+
+                //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                obj.preview(function(index, file, result){
+                    console.log(index); //得到文件索引
+                    console.log(file); //得到文件对象
+                    console.log(result); //得到文件base64编码，比如图片
+                    $('#headImg').attr('src',result);
+                   $('input[name="headPic"]').val(result);
+
+                    //这里还可以做一些 append 文件列表 DOM 的操作
+
+                    //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
+                    //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
+                });
+            }
+            ,done: function(res){
+                //上传完毕回调
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
+    });
+
+
+    $('#selectGps').click(function () {
+
+        var url='../baidumap.html';
+        var lat=$('input[name="lat"]').val();
+        if(lat){
+            url+='?lat='+lat+'&lng='+$('input[name="lng"]').val();
+        }
+
+
+        layer.open({
+            type: 2,
+            title:'选择公司坐标',
+            fixed: false, //不固定
+            area:['100%','100%'],
+            content: url
+        });
+
+    });
+
+
+</script>
+
+
+</body>
+</html>
