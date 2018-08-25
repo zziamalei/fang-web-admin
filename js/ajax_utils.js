@@ -1,4 +1,4 @@
-var apiRoot='http://localhost:8089';
+var apiRoot='/api/';
 
 var access_token= window.localStorage.access_token;
 
@@ -60,9 +60,9 @@ $.extend({
                     if(data.code==20001){
                         layer.msg('登录超时',{time:1500},function () {
                             window.localStorage.access_token=null;
-                            parent.parent.window.location.href='/admin-web/login.html';
-                            parent.window.location.href='/admin-web/login.html';
-                            window.location.href='/admin-web/login.html';
+                            parent.parent.window.location.href='../login.html';
+                            parent.window.location.href='../login.html';
+                            window.location.href='../login.html';
                         });
 
                         return;
@@ -117,9 +117,9 @@ $.extend({
                 if(backData.code==20001){
                     layer.msg('登录超时',{time:1500},function () {
                         window.localStorage.access_token=null;
-                        parent.parent.window.location.href='/admin-web/login.html';
-                        parent.window.location.href='/admin-web/login.html';
-                        window.location.href='/admin-web/login.html';
+                        parent.parent.window.location.href='../login.html';
+                        parent.window.location.href='../login.html';
+                        window.location.href='../login.html';
                     });
                     return;
                 }

@@ -173,9 +173,9 @@ layui.define(["laytpl", "laypage", "layer", "form"], function(e) {
                     if(t.code==20001){
                         layer.msg('登录超时',{time:1500},function () {
                             window.localStorage.access_token=null;
-                            parent.parent.window.location.href='/admin-web/login.html';
-                            parent.window.location.href='/admin-web/login.html';
-                            window.location.href='/admin-web/login.html';
+                            parent.parent.window.location.href='../../../../login.html';
+                            parent.window.location.href='../../../../login.html';
+                            window.location.href='../../../../login.html';
                         });
                         return;
                     }
