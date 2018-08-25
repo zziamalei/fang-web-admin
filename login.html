@@ -46,7 +46,7 @@
 	        <img alt="" src='login-static/img/key.png'>
 	      </div>
 	      <input name="code" placeholder='验证码' maxlength="6" type='text' name="ValidateNum" autocomplete="off">
-	      <div class='validation' style="opacity: 1; right: -5px;top: -3px;">
+	      <div class='validation' style="opacity: 1; right: -5px;top: -3px;" onclick="getCode();">
          <!-- <canvas class="J_codeimg" id="myCanvas" onclick="Code();">对不起，您的浏览器不支持canvas，请下载最新版浏览器!</canvas>-->
 			  <img class="J_codeimg" id="myCanvas" onclick="getCode();"/>
 	      </div>
@@ -204,7 +204,6 @@
                        //登陆
                        var JsonData = { login_name: encryptPadding(login), password: encryptPadding(pwd), code: code,key:pbkey,security_id:security_id };
 
-                       alert(JsonData);
 
                        $.myAjax({
                            url: '/auth/rest/zh/latest/login/login',
@@ -298,16 +297,17 @@
 
 	getCode();
 
+
 	function getCode() {
 
-        $.myAjaxData({
-            url: '/auth/rest/zh/latest/login/verify_code',
-            successBack: function (data) {
-                $('#myCanvas').attr('src',data.url);
-                pbkey=data.pk;
-                security_id=data.security_id;
-            }
-        });
+        // $.ajax({
+		// 	url:apiRoot+'/code/loginCode',
+		// 	success:function(data){
+		// 	    alert(data);
+		// 	}
+		// });
+
+        $('#myCanvas').attr('src',apiRoot+'/code/loginCode');
 
     }
 

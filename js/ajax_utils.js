@@ -1,4 +1,4 @@
-var apiRoot='/api/';
+var apiRoot='http://localhost:8089/';
 
 var access_token= window.localStorage.access_token;
 
@@ -95,10 +95,14 @@ $.extend({
 
 
         var options=jQuery.extend({},_default,options);
+
         $.ajax({
             type: options.type,
             url: apiRoot+options.url,
-            data: options.data,
+            data: JSON.stringify(options.data),
+            xhrFields:{
+                withCredentials:true
+            },
             traditional:true,
             contentType:'application/json;charset=utf-8',
             dataType:'json',
