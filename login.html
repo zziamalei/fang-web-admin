@@ -202,7 +202,8 @@
 
                    function adminLogin() {
                        //登陆
-                       var JsonData = { login_name: encryptPadding(login), password: encryptPadding(pwd), code: code,key:pbkey,security_id:security_id };
+                       // var JsonData = { login_name: encryptPadding(login), password: encryptPadding(pwd), code: code,key:pbkey,security_id:security_id };
+                       var JsonData = { login_name: login, password: pwd, code: code,key:pbkey,security_id:security_id };
 
 
                        $.myAjax({

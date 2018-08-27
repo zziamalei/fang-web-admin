@@ -1,4 +1,4 @@
-var apiRoot='http://localhost:8089/';
+var apiRoot='http://192.168.0.226:8089/';
 
 var access_token= window.localStorage.access_token;
 
@@ -100,10 +100,9 @@ $.extend({
             type: options.type,
             url: apiRoot+options.url,
             data: JSON.stringify(options.data),
-            xhrFields:{
-                withCredentials:true
+            xhrFields: {
+                withCredentials: true // 设置运行跨域操作
             },
-            traditional:true,
             contentType:'application/json;charset=utf-8',
             dataType:'json',
             headers:{access_token:access_token},
