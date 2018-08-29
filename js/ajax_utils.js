@@ -1,4 +1,4 @@
-var apiRoot='http://192.168.0.226:8089/';
+var apiRoot='http://118.25.50.11:8089/';
 
 var access_token= window.localStorage.access_token;
 
@@ -349,15 +349,16 @@ $.extend({
             //监听提交
             form.on('submit(save)', function(data){
 
-                layer.alert(JSON.stringify(data.field), {
-                    title: '最终的提交信息'
-                });
+                console.log('最终的提交信息:'+JSON.stringify(data.field))
+                // layer.alert(JSON.stringify(data.field), {
+                //     title: '最终的提交信息'
+                // });
 
 
 
                 $.myAjax({
                     url:$('.layui-form').attr('action'),
-                    data:JSON.stringify(data.field),
+                    data:data.field,
                     type:'post',
                     beforeSend: function(request) {
                         request.setRequestHeader("access_token", access_token);

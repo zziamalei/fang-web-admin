@@ -21,7 +21,7 @@ layui.define(['element',"fsConfig","fsCommon"], function(exports){
 			data : [
 
                {"menuId":"kongzhitai","menuName":"控制台","menuIcon":"fa-cog","menuHref":"","parentMenuId":"0"},
-                {"menuId":"shouye","menuName":"首页","menuIcon":"&#xe68e;","menuHref":"hnt_system/index.html","parentMenuId":"kongzhitai"},
+                {"menuId":"shouye","menuName":"首页","menuIcon":"&#xe68e;","menuHref":"admin_house/house_list.html","parentMenuId":"kongzhitai"},
                /* {"menuId":"xitongguanli","menuName":"系统管理","menuIcon":"fa-cog","menuHref":"","parentMenuId":"kongzhitai"},
 				{"menuId":"jueseguanli","menuName":"角色管理","menuIcon":"fa-cog","menuHref":"admin_system/role_list.html","parentMenuId":"xitongguanli"},
 				{"menuId":"caozuoyuanguanli","menuName":"操作员管理","menuIcon":"fa-cog","menuHref":"admin_system/admin_list.html","parentMenuId":"xitongguanli"},
